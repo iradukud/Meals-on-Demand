@@ -1,25 +1,29 @@
 <%- include('partials/header') -%>
 
-    <main class="container position-absolute top-50 start-50 translate-middle">
+<main class="container position-absolute top-50 start-50 translate-middle">
+  <div class=" container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-5">
 
-        <div class=" container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-5">
-            <div class="col-10 col-sm-8 col-lg-6">
-                <img src="/imgs/coverImage.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700"
-                    height="500" loading="lazy">
-            </div>
-            <div class="col-lg-6">
-                <h1 class="display-5 fw-bold lh-1 mb-3 text-center">Meals on Demand</h1>
-                <p class="lead text-center">The last cookbook you will ever need. All your favourite recipe are now just a click
-                    away</p>
-                <div class="d-flex justify-content-center">
-                    <a href="/login" class="btn btn-primary btn-lg px-4 me-md-2">Login</a>
-                    <a href="/signup" class="btn btn-outline-secondary btn-lg px-4">Signup</a>
-                </div>
-            </div>
-        </div>
-        </div>
+      <!-- Hero image -->
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="/imgs/coverImage.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+      </div>
 
-    </main>
+      <!-- Hero text -->
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold lh-1 mb-3 text-center">Meals on Demand</h1>
+        <p class="lead text-center">The last cookbook you will ever need. All your favourite recipe are now just a click
+          away</p>
+
+        <!-- Loggings links -->
+        <div class="d-flex justify-content-center">
+          <a href="/login" class="btn btn-primary btn-lg px-4 me-md-2">Login</a>
+          <a href="/signup" class="btn btn-outline-secondary btn-lg px-4">Signup</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
 
 <%- include('partials/footer') -%>

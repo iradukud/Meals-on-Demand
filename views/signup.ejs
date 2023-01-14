@@ -1,39 +1,60 @@
 <%- include('partials/header') -%>
-    <main class="container">
-        <div class="row justify-content-center">
-            <section class="col-6 mt-5">
-                <% if (locals.messages.errors) { %>
-                    <% messages.errors.forEach( el => { %>
-                        <div class="alert alert-danger"><%= el.msg %></div>
-                    <% }) %>    
-                <% } %>
-                <% if (locals.messages.info) { %>
-                    <% messages.info.forEach( el => { %>
-                        <div class="alert alert-info"><%= el.msg %></div>
-                    <% }) %>    
-                <% } %>
-                <form action="/signup" method="POST">
-                    <div class="mb-3">
-                        <label for="userName" class="form-label">User Name</label>
-                        <input type="text" class="form-control" id="userName" name="userName">
-                      </div>
-                    <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-                      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="password" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="password" name="password">
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
-                      </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-            </section>
+
+<main class="form-loggings w-100 m-auto text-center position-absolute top-50 start-50 translate-middle">
+  <div class="row justify-content-center">
+    <section class="col-6 mt-5">
+
+      <%#-- Error alerts --%>
+      <% if (locals.messages.errors) { %>
+      <% messages.errors.forEach( el => { %>
+      <div class="alert alert-danger"><%= el.msg %></div>
+      <% }) %>
+      <% } %>
+
+      <% if (locals.messages.info) { %>
+      <% messages.info.forEach( el => { %>
+      <div class="alert alert-info"><%= el.msg %></div>
+      <% }) %>
+      <% } %>
+
+      <!-- Login form -->
+      <form action="/signup" method="POST">
+        <a href="/"><img class="mb-4" src="/imgs/logoIcon.png" alt="logoIcon" width="72" height="57"></a>
+        <h1 class="h3 mb-3 fw-normal">Meals on Demand</h1>
+
+        <!-- Username input -->
+        <div class="form-floating">
+          <input type="text" class="form-control" id="userName" name="userName" placeholder="userName">
+          <label for="userName" class="form-label">User Name</label>
         </div>
-    </main>
+
+        <!-- Email input -->
+        <div class="form-floating mt-3 mb-3">
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="name@example.com" name="email">
+          <label for="exampleInputEmail1">Email address</label>
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+
+        <!-- Password input -->
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+          <label for="password">Password</label>
+        </div>
+
+        <!-- Password confirmation input -->
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Password">
+          <label for="confirmPassword">Password</label>
+        </div>
+
+        <!-- Submission links/buttons -->
+        <button class="btn btn-primary btn-lg px-4 me-md-2" type="submit">Sign up</button>
+        <h5 class="h5 mb-3 mt-3 fw-normal">Already have an account?</h5>
+        <a href="/login" class="mb-3 btn btn-outline-secondary btn-lg px-4">Login</a>
+      </form>
+
+    </section>
+  </div>
+</main>
 
 <%- include('partials/footer') -%>

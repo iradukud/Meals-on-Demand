@@ -1,0 +1,21 @@
+/* Login and Signp form */
+.form-loggings {
+    max-width: 650px;
+    padding: 15px;
+}
+
+.form-loggings .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-loggings input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-loggings input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
