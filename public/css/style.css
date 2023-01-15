@@ -19,3 +19,9 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+/* Nav bar - ensures it's fixed */
+body {
+  min-height: 75rem;
+  padding-top: 4.5rem;
+}

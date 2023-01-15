@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+
+  <div class="container-fluid">
+    <!-- Links to user dashboard -->
+    <a class="navbar-brand" href="/">Meals on Demand</a>
+
+    <!-- Dropdown of menu button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav items -->
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link <%= title=='Dashboard'? "active" : "" %>" href="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= title=='Add Recipe'? "active" : "" %>" href="/addRecipe">Add Recipe</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= title=='Recipe Lookup'? "active" : "" %>" href="recipeLookup">Recipe Lookup</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= title=='Account'? "active" : "" %>" href="/account">Account</a>
+        </li>
+      </ul>
+
+      <!-- logout button -->
+      <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+        <a href="/logout" class="col-3 btn btn-primary">Logout</a>
+      </div>
+
+    </div>
+  </div>
+
+</nav>

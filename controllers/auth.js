@@ -6,7 +6,7 @@ const User = require("../models/User");
 exports.getLogin = (req, res) => {
   //If signed in redirect to dashboard
   if (req.user) {
-    return res.redirect("/profile");
+    return res.redirect("/dashboard");
   }
   res.render("login", {
     title: "Login",
@@ -44,7 +44,7 @@ exports.postLogin = (req, res, next) => {
 
     //if user can't be find return corresponding error message and redirect back to page
     if (!user) {
-      console.log("Emaiil/Password arent't in our database")
+      console.log("Email/Password arent't in our database")
       req.flash("errors", info);
       return res.redirect("/login");
     }
@@ -58,7 +58,7 @@ exports.postLogin = (req, res, next) => {
 
       //redirect to user's dashboard
       req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(req.session.returnTo || "/profile");
+      res.redirect(req.session.returnTo || "/dashboard");
     });
   })(req, res, next);
 };
@@ -87,7 +87,7 @@ exports.logout = (req, res) => {
 exports.getSignup = (req, res) => {
   //if user is signed in already return redirect to dashboard page
   if (req.user) {
-    return res.redirect("/profile");
+    return res.redirect("/dashboard");
   }
   res.render("signup", {
     title: "Create Account",
@@ -112,7 +112,7 @@ exports.postSignup = (req, res, next) => {
   //If the validationErrors array has any messages redirect to login page with error presented to the user     
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("../signup");
+    return res.redirect("/signup");
   }
 
   req.body.email = validator.normalizeEmail(req.body.email, {
@@ -141,7 +141,7 @@ exports.postSignup = (req, res, next) => {
         req.flash("errors", {
           msg: "Account with that email address or username already exists.",
         });
-        return res.redirect("../signup");
+        return res.redirect("/signup");
       }
 
       //save user's information and redirect to dashboard page
@@ -157,7 +157,7 @@ exports.postSignup = (req, res, next) => {
           if (err) {
             return next(err);
           }
-          res.redirect("/profile");
+          res.redirect("/dashboard");
         });
       });
     }
