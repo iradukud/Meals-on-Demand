@@ -1,32 +1,57 @@
 /* Login and Signp form */
 .form-loggings {
-    max-width: 650px;
-    padding: 15px;
+  max-width: 650px;
+  padding: 15px;
 }
 
 .form-loggings .form-floating:focus-within {
-    z-index: 2;
+  z-index: 2;
 }
 
 .form-loggings input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .form-loggings input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 /* Nav bar - ensures it's fixed */
 body {
-    min-height: 75rem;
-    padding-top: 4.5rem;
+  min-height: 75rem;
+  padding-top: 4.5rem;
 }
 
 /* Removed bullets from list - recipe */
 ul {
-    list-style-type: none;
+  list-style-type: none;
+}
+
+/* Recipe popup*/
+.modal-sheet .modal-dialog {
+  width: 380px;
+  transition: bottom .75s ease-in-out;
+}
+
+.modal-sheet .modal-footer {
+  padding-bottom: 2rem;
+}
+
+.modal-alert .modal-dialog {
+  width: 380px;
+}
+
+.modal-tour .modal-dialog {
+  width: 380px;
+}
+
+legend {
+  width: fit-content;
+  background-color: #0b5ed7;
+  color: #fff;
+  padding: 3px 6px;
 }

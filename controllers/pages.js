@@ -14,10 +14,6 @@ exports.getAddRecipe = (req, res) => {
   res.render("addRecipe.ejs", { title: "Add Recipe" });
 }
 
-exports.getRecipeLookup = (req, res) => {
-  res.render("recipeLookup.ejs", { title: "Recipe Lookup" });
-}
-
 exports.getAccount = (req, res) => {
   res.render("account.ejs", { title: "Account" });
 }

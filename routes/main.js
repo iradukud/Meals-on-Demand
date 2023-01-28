@@ -9,7 +9,6 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 router.get("/", pageController.getIndex);
 router.get("/dashboard", ensureAuth, pageController.getDashboard);
 router.get("/addRecipe",  pageController.getAddRecipe);
-router.get("/recipeLookup", pageController.getRecipeLookup);
 router.get("/account", pageController.getAccount);
 
 /* Loging Routes */

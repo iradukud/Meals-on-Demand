@@ -17,9 +17,6 @@
           <a class="nav-link <%= title=='Dashboard'? "active" : "" %>" href="/dashboard">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%= title=='Add Recipe'? "active" : "" %>" href="/addRecipe">Add Recipe</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link <%= title=='Recipe Lookup'? "active" : "" %>" href="/recipeLookup">Recipe Lookup</a>
         </li>
         <li class="nav-item">
@@ -27,12 +24,107 @@
         </li>
       </ul>
 
+      <!-- Button trigger add recipe modal -->
+      <div class="justify-content-lg-end">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#recipeModal" id="addRecipe">
+          Create Recipe
+        </button>
+      </div>
       <!-- logout button -->
-      <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-        <a href="/logout" class="col-3 btn btn-primary">Logout</a>
+      <div class="d-lg-flex col-sm-1 justify-content-lg-end">
+        <a href="/logout" class="btn btn-primary">Logout</a>
       </div>
 
     </div>
   </div>
-
 </nav>
+
+<!-- recipe modal -->
+<div class="modal fade" id="recipeModal" tabindex="-1" role="dialog" aria-labelledby="recipeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="recipeModalLabel">Create new recipe</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- Form collecting user inputs -->
+      <form action="/dbRecipes/create" enctype="multipart/form-data" id="createRecipe" method='POST'>
+        <div class="modal-body">
+          <!-- Recipe's name -->
+          <div class="mb-3 form-floating">
+            <input type="text" class="form-control" id="recipeName" aria-describedby="recipeNameHelp" name="recipeName" placeholder="Recipe name">
+            <label for="recipeName">Recipe name</label>
+          </div>
+
+          <!-- Recipe's image -->
+          <div class="mb-3">
+            <input type="file" class="form-control" id="imageUpload" aria-describedby="recipeImageHelp" name="recipeImage" placeholder="Recipe image">
+          </div>
+
+          <!-- Recipe's type -->
+          <fieldset>
+            <div class="d-flex justify-content-center">
+              <legend>Choose your recipe's type(s)</legend>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+              <input type="checkbox" id="breakfast" name="breakfast" value="breakfast">
+              <label for="breakfast">Breakfast</label>
+              <input type="checkbox" id="brunch" name="brunch" value="brunch">
+              <label for="brunch">Brunch</label>
+              <input type="checkbox" id="lunch" name="lunch" value="lunch">
+              <label for="lunch">Lunch</label>
+              <input type="checkbox" id="dinner" name="dinner" value="dinner">
+              <label for="dinner">Dinner</label>
+              <input type="checkbox" id="snack" name="snack" value="snack">
+              <label for="snack">Snack</label>
+              <input type="checkbox" id="snack" name="teatime" value="teatime">
+              <label for="snack">Tea Time</label>
+            </div>
+          </fieldset>
+
+          <!-- Recipe's ingredients -->
+          <div class="mb-3">
+            <fieldset>
+              <div class="d-flex justify-content-center">
+                <legend><label for="recipeIngredients">Recipe's ingredients</label></legend>
+              </div>
+              <div>
+                <textarea class="form-control" id="recipeIngredients" aria-describedby="recipeIngredientsHelp" name="recipeIngredients" placeholder="Input the recipe's ingredients separated by a full stop('.'), there's no need to number them." rows="5"></textarea>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Recipe's instructions -->
+          <div class="mb-3">
+            <fieldset>
+              <div class="d-flex justify-content-center">
+                <legend><label for="recipeInstructions">Recipe's instructions</label></legend>
+              </div>
+              <div>
+                <textarea class="form-control" id="recipeInstructions" aria-describedby="recipeInstructionsHelp" name="recipeInstructions" placeholder="Input the recipe's instructions in order separated by a full stop('.'), there's no need to number them." rows="5"></textarea>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Recipe's reference -->
+          <div class="mb-3 form-floating">
+            <input type="text" class="form-control" id="recipeReference" aria-describedby="recipeReferenceHelp" name="recipeReference" placeholder="Recipe reference">
+            <label for="recipeReference">Recipe source</label>
+          </div>
+
+
+          <!-- submit recipe -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" value="Upload">Create</button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
