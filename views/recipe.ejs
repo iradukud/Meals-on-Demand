@@ -1,0 +1,76 @@
+<%- include('partials/header') -%>
+<%- include('partials/nav') -%>
+
+<main class="w-100 m-auto text-center ">
+  <!-- Heading & Image-->
+  <img class="mb-2 mt-2" src="/imgs/pageImage.png" alt="bookImage" width="100">
+  <h1 class="display-5 fw-bold lh-1 mb-3 text-center"><%= recipe['recipe']['label'] %></h1>
+
+  <%#- Recipe generated from the search request via API %>
+  <% if (typeof recipe!='undefined') { %>
+  <section class="row justify-content-center mt-3 px-5">
+
+    <%# Container recipe %>
+    <div class="card shadow-sm col-6 ">
+
+      <%# Recipe image %>
+      <div>
+        <img src="<%= recipe['recipe']['image'] %>" class="mt-3" width="50%" height="300"></img>
+      </div>
+
+      <%# Recipe category %>
+      <div class="d-flex justify-content-center mt-3">
+        <h6 class="btn-primary btn-lg px-4 me-md-2"><%=recipe['recipe']['mealType']%></h6>
+      </div>
+
+      <%# Recipe ingredients %>
+      <div class="card-body">
+        <h4>Ingredients</h4>
+        <ul class="px-0">
+          <%# each ingredient %>
+          <% recipe['recipe']['ingredientLines'].forEach(ingredient => {%>
+          <li class="border-bottom">
+            <%= ingredient %>
+          </li>
+          <%})%>
+        </ul>
+
+        <%# Recipe instructions %>
+        <% if (typeof recipe['recipe']['instructions']!='undefined') { %>
+        <h4>Instructions</h4>
+        <p>
+          <%= recipe['recipe']['instructions'] %>
+        </p>
+        <% } %>
+      </div>
+
+      <%# Links %>
+      <div class="d-flex justify-content-around align-items-center px-4 mb-3">
+        
+        <%# Back button %>
+        <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">Back</button>
+        
+        <%# Link to origiinal recipe %>
+        <a href="<%=recipe['recipe']['url']%>" target="_blank">
+          <h6>Reference Site/Video</h6>
+        </a>
+
+        <%# Save button %>
+        <form action="/apiRecipes/save" method="POST">
+          <input type="hidden" name="recipeName" value="<%=recipe['recipe']['label']%>">
+          <input type="hidden" name="recipeImage" value="<%=recipe['recipe']['image']%>">
+          <input type="hidden" name="recipeMealtype" value="<%=recipe['recipe']['mealType']%>">
+          <input type="hidden" name="recipeIngredients" value="<%=recipe['recipe']['ingredientLines']%>">
+          <input type="hidden" name="recipeReference" value="<%=recipe['recipe']['url']%>">
+          <button class="btn btn-primary btn-lg" type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+
+  </section>
+  <% } %>
+
+</main>
+
+
+<%- include('partials/footer') -%>

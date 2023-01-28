@@ -22,6 +22,11 @@
 
 /* Nav bar - ensures it's fixed */
 body {
-  min-height: 75rem;
-  padding-top: 4.5rem;
+    min-height: 75rem;
+    padding-top: 4.5rem;
+}
+
+/* Removed bullets from list - recipe */
+ul {
+    list-style-type: none;
 }
