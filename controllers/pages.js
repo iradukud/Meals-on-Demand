@@ -1,3 +1,5 @@
+const Recipe = require("../models/Recipe");
+
 exports.getIndex = (req, res) => {
   //If signed in redirect to dashboard
   if (req.user) {
@@ -6,12 +8,17 @@ exports.getIndex = (req, res) => {
   res.render("index.ejs", { title: "Login or Sign up" });
 }
 
-exports.getDashboard = (req, res) => {
-  res.render("dashboard.ejs", { title: "Dashboard" });
+exports.getDashboard = async (req, res) => {
+  try {
+    const recipes = await Recipe.find({ user: req.user.id });
+    res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: 0 });
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-exports.getAddRecipe = (req, res) => {
-  res.render("addRecipe.ejs", { title: "Add Recipe" });
+exports.getRecipeLookup = (req, res) => {
+  res.render("recipeLookup.ejs", { title: "Recipe Lookup" });
 }
 
 exports.getAccount = (req, res) => {

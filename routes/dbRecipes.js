@@ -6,7 +6,7 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 /* Recipe Routes */
 router.post("/create", upload.single("recipeImage"), dbRecipeController.createRecipes);
-
+router.get("/page/:number", dbRecipeController.nextPageRecipes);
 
 
 
