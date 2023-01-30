@@ -29,9 +29,23 @@ module.exports = {
 
   nextPageRecipes: async (req, res) => {
     try {
-      console.log(req.params.number)
-      const recipes = await Recipe.find({ user: req.user.id });
-      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user , page:req.params.number-1});
+      const [num, mealType] = (req.params.number).split('_');
+      let recipes = '';
+      if (mealType != 'default') {
+        recipes = await Recipe.find({ user: req.user.id, type: mealType });
+      } else {
+        recipes = await Recipe.find({ user: req.user.id })
+      }
+      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: num - 1, filter: mealType });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  filterDBRecipes: async (req, res) => {
+    try {
+      console.log(req.params.mealtype)
+      const recipes = await Recipe.find({ user: req.user.id, type: req.params.mealtype });
+      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: 0, filter: req.params.mealtype });
     } catch (err) {
       console.log(err);
     }

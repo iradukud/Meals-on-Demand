@@ -4,10 +4,23 @@
 <main class="w-100 m-auto text-center ">
   <!-- Heading & Image-->
   <img class="mb-2 mt-2" src="/imgs/homePage.png" alt="bookImage" width="100">
-  <h1 class="display-5 fw-bold lh-1 mb-3">Dashboard</h1>
+  <h1 class="display-5 fw-bold lh-1 mb-5">Dashboard</h1>
 
-  <%#- Recipes generated from the search request via API %>
+  <%#- Recipes the our DB %>
   <% if (typeof recipes!='undefined') { %>
+  
+  <%#- Filter through the DB recipes by their meal type %>
+  <nav aria-label="recipe filter">
+    <ul class="pagination justify-content-center">
+      <li class="page-item <%= filter=='breakfast'? "active" : "" %>"><a class="page-link" href="/dbRecipes/filter/breakfast">BREAKFAST</a></li>
+      <li class="page-item <%= filter=='brunch'? "active" : "" %>"><a class="page-link" href="/dbRecipes/filter/brunch">BRUNCH</a></li>
+      <li class="page-item <%= filter=='lunch'? "active" : "" %>"><a class="page-link" href="/dbRecipes/filter/lunch">LUNCH</a></li>
+      <li class="page-item <%= filter=='dinner'? "active" : "" %>"><a class="page-link" href="/dbRecipes/filter/dinner">DINNER</a></li>
+      <li class="page-item <%= filter=='snack'? "active" : "" %>"><a class="page-link" href="/dbRecipes/filter/snack">SNACK</a></li>
+      <li class="page-item <%= filter=='teatime'? "active" : "" %>"><a class="page-link" href="/dbRecipes/filter/teatime">TEATIME</a></li>
+    </ul>
+  </nav>
+
   <section class="row mt-5 px-5">
     <%# Calculated the start and end points of the recipes to be looped through %>
     <% const itemStart= page*8 %>
@@ -38,13 +51,13 @@
   </section>
   
   <%# Page navigation %>
-    <div class="d-flex justify-content-center mt-2">
+    <div class="d-flex justify-content-center mt-5">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <%# Previous page %>
           <% if(page!=0){%>
           <li class="page-item">
-            <a class="page-link" href="/dbRecipes/page/<%=page%>" aria-label="Previous">
+            <a class="page-link" href="/dbRecipes/page/<%=page%>_<%=filter%>" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
             </a>
@@ -57,13 +70,13 @@
           <%# next 3 pages %>
           <%for(navPage=page;navPage<Math.ceil(recipes.length/8);navPage++){%>
           <% if(navPage==page+4){break}%>
-          <li class="page-item <%= page==navPage? "active" : "" %>"><a class="page-link" href="/dbRecipes/page/<%=navPage+1%>"><%=navPage+1%></a></li>
+          <li class="page-item <%= page==navPage? "active" : "" %>"><a class="page-link" href="/dbRecipes/page/<%=navPage+1%>_<%=filter%>"><%=navPage+1%></a></li>
           <%}%>
 
         <%# Next page %>
           <%if(page!=Math.ceil(recipes.length/8)){%>
           <li class="page-item">
-            <a class="page-link" href="/dbRecipes/page/<%=page+2%>" aria-label="Next">
+            <a class="page-link" href="/dbRecipes/page/<%=page+2%>_<%=filter%>" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>

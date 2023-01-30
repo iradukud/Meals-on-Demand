@@ -11,7 +11,7 @@ exports.getIndex = (req, res) => {
 exports.getDashboard = async (req, res) => {
   try {
     const recipes = await Recipe.find({ user: req.user.id });
-    res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: 0 });
+    res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: 0, filter: 'default' });
   } catch (err) {
     console.log(err);
   }
