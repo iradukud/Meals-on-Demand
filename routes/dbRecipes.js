@@ -8,6 +8,9 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 router.post("/create", upload.single("recipeImage"), dbRecipeController.createRecipes);
 router.get("/page/:number", dbRecipeController.nextPageRecipes);
 router.get("/filter/:mealtype", dbRecipeController.filterDBRecipes);
+router.get("/:id", dbRecipeController.getRecipe);
+router.delete("/delete/:id", dbRecipeController.deleteRecipe);
+router.put("/edit", upload.single("recipeImage"),dbRecipeController.editRecipe)
 
 
 module.exports = router;

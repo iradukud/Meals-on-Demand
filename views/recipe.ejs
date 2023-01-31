@@ -2,75 +2,136 @@
 <%- include('partials/nav') -%>
 
 <main class="w-100 m-auto text-center ">
-  <!-- Heading & Image-->
+  <!-- Page Image-->
   <img class="mb-2 mt-2" src="/imgs/pageImage.png" alt="bookImage" width="100">
-  <h1 class="display-5 fw-bold lh-1 mb-3 text-center"><%= recipe['recipe']['label'] %></h1>
 
-  <%#- Recipe generated from the search request via API %>
-  <% if (typeof recipe!='undefined') { %>
+  <%#- variables plugged into recipe display %>
+  <%  
+    let name = ''
+    let image = ''
+    let type = []
+    let ingredients = []
+    let instructions = [] 
+    let reference = ''
+   %>
+
+  <%#- Recipe from API %>
+  <%
+    if (typeof apiRecipe!='undefined') {
+      name = apiRecipe['recipe']['label']
+      image = apiRecipe['recipe']['image']
+      type = apiRecipe['recipe']['mealType']
+      ingredients = apiRecipe['recipe']['ingredientLines']
+      reference = apiRecipe['recipe']['url']
+    }
+  %>
+
+  <%#- Recipe from API %>
+  <% if (typeof dbRecipe!='undefined') { 
+      name = dbRecipe['name']
+      image = dbRecipe['image']
+      type = dbRecipe['type']
+      ingredients = dbRecipe['ingredients']
+      instructions = dbRecipe['instructions']
+      reference = dbRecipe['reference']
+    
+  }%>
+
+  <%#- Recipe name %>
+  <h1 class="display-5 fw-bold lh-1 mb-3 text-center" id="editName"><%= name %></h1>
+
   <section class="row justify-content-center mt-3 px-5">
-
     <%# Container recipe %>
     <div class="card shadow-sm col-6 ">
-
       <%# Recipe image %>
       <div>
-        <img src="<%= recipe['recipe']['image'] %>" class="mt-3" width="50%" height="300"></img>
+        <img src="<%= image %>" class="mt-3" width="50%" height="300"></img>
       </div>
 
       <%# Recipe category %>
       <div class="d-flex justify-content-center mt-3">
-        <h6 class="btn-primary btn-lg px-4 me-md-2"><%=recipe['recipe']['mealType']%></h6>
+        <% if (typeof dbRecipe!='undefined') {%>
+        <% type.forEach(mtype => {%>
+        <h6 class="btn-primary btn-lg px-4 me-md-2 types" ><%= mtype %></h6>
+        <%})%>
+        <%}%>
+        <% if (typeof apiRecipe!='undefined') {%>
+        <h6 class="btn-primary btn-lg px-4 me-md-2"><%= type %></h6>
+        <%}%>
       </div>
 
       <%# Recipe ingredients %>
-      <div class="card-body">
-        <h4>Ingredients</h4>
-        <ul class="px-0">
-          <%# each ingredient %>
-          <% recipe['recipe']['ingredientLines'].forEach(ingredient => {%>
-          <li class="border-bottom">
-            <%= ingredient %>
-          </li>
-          <%})%>
-        </ul>
+        <div class="card-body">
+          <h4>Ingredients</h4>
+          <ul class="px-0">
+            <%# each ingredient %>
+            <% ingredients.forEach(ingredient => {%>
+            <li class="border-bottom editIngredient">
+              <%= ingredient %>
+            </li>
+            <%})%>
+          </ul>
+        </div>
 
-        <%# Recipe instructions %>
-        <% if (typeof recipe['recipe']['instructions']!='undefined') { %>
-        <h4>Instructions</h4>
-        <p>
-          <%= recipe['recipe']['instructions'] %>
-        </p>
-        <% } %>
-      </div>
+        <%# Recipe ingredients %>
+        <% if (instructions.length!=0) { %>
+        <div class="card-body">
+          <h4>Instructions</h4>
+          <ul class="px-0">
+            <%# each ingredient %>
+            <% instructions.forEach(instruction => {%>
+            <li class="border-bottom editInstruction">
+              <%= instruction %>
+            </li>
+            <%})%>
+          </ul>
+        </div>
+        <%}%>
 
-      <%# Links %>
-      <div class="d-flex justify-content-around align-items-center px-4 mb-3">
-        
-        <%# Back button %>
-        <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">Back</button>
-        
-        <%# Link to origiinal recipe %>
-        <a href="<%=recipe['recipe']['url']%>" target="_blank">
+      <%# Link to origiinal recipe %>
+        <a href="<%= reference %>" target="_blank" id="editreference">
           <h6>Reference Site/Video</h6>
         </a>
 
-        <%# Save button %>
-        <form action="/apiRecipes/save" method="POST">
-          <input type="hidden" name="recipeName" value="<%=recipe['recipe']['label']%>">
-          <input type="hidden" name="recipeImage" value="<%=recipe['recipe']['image']%>">
-          <input type="hidden" name="recipeMealtype" value="<%=recipe['recipe']['mealType']%>">
-          <input type="hidden" name="recipeIngredients" value="<%=recipe['recipe']['ingredientLines']%>">
-          <input type="hidden" name="recipeReference" value="<%=recipe['recipe']['url']%>">
-          <button class="btn btn-primary btn-lg" type="submit">Save</button>
-        </form>
-      </div>
-    </div>
+        <%# Present links if recipe is from API %>
+        <% if (typeof apiRecipe!='undefined') { %>
+        <div class="d-flex justify-content-around align-items-center px-4 mb-3 mt-5">
 
+          <%# Back button %>
+          <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">Back</button>
+
+          <%# Save button %>
+          <form action="/apiRecipes/save" method="POST">
+            <input type="hidden" name="recipeName" value="<%=name%>">
+            <input type="hidden" name="recipeImage" value="<%=image%>">
+            <input type="hidden" name="recipeMealtype" value="<%=type%>">
+            <input type="hidden" name="recipeIngredients" value="<%=ingredients%>">
+            <input type="hidden" name="recipeReference" value="<%=reference%>">
+            <button class="btn btn-primary btn-lg" type="submit">Save</button>
+          </form>
+        </div>
+
+        <%}%>
+
+        <%# Present links if recipe is from DB %>
+        <% if (typeof dbRecipe!='undefined') { %>
+        <div class="d-flex justify-content-around align-items-center px-4 mb-3 mt-5">
+          <%# Back button %>
+          <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">Back</button>
+
+          <%# Edit button %>
+          <button class="btn btn-primary btn-lg fas fa-edit" id="editRecipe"></button>
+          <span hidden id="recipeId"><%=dbRecipe['_id']%></span>
+
+          <%# Delete button %>
+          <form action="/dbRecipes/delete/<%= dbRecipe.id %>?_method=DELETE" method="POST">
+            <button class="btn btn-primary btn-lg fa fa-trash"></button>
+          </form>
+        </div>
+        <%}%>
+
+        </div>
   </section>
-  <% } %>
-
 </main>
-
 
 <%- include('partials/footer') -%>

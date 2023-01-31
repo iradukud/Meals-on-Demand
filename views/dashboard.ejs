@@ -8,7 +8,7 @@
 
   <%#- Recipes the our DB %>
   <% if (typeof recipes!='undefined') { %>
-  
+
   <%#- Filter through the DB recipes by their meal type %>
   <nav aria-label="recipe filter">
     <ul class="pagination justify-content-center">
@@ -35,14 +35,14 @@
     <div class="col-md-3 themed-grid-col mb-3">
       <div class="card shadow-sm">
         <%# Recipe image %>
-        <a href="">
-          <img class="card-img-top" width="100%" height="300" src="<%= recipes[i]['image'] %>"></img>
+        <a href="/dbRecipes/<%=recipes[i]['_id']%>">
+          <img class="card-img-top" width="100%" height="300" src="<%=recipes[i]['image']%>"></img>
         </a>
 
         <%# Recipe name %>
         <div class="card-body">
-          <a href=">">
-            <p class="card-text "><%= recipes[i]['name'] %></p>
+          <a href="/dbRecipes/<%=recipes[i]['_id']%>">
+            <p class="card-text"><%= recipes[i]['name'] %></p>
           </a>
         </div>
       </div>

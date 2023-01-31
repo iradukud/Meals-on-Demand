@@ -45,13 +45,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title" id="recipeModalLabel">Create new recipe</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <!-- Form collecting user inputs -->
-      <form action="/dbRecipes/create" enctype="multipart/form-data" id="createRecipe" method='POST'>
+      <form action="/dbRecipes/create" enctype="multipart/form-data" id="recipeForm" method='POST'>
         <div class="modal-body">
           <!-- Recipe's name -->
           <div class="mb-3 form-floating">
@@ -118,9 +116,9 @@
 
           <!-- submit recipe -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" value="Upload">Create</button>
-          </div>
+            <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+            <button type="submit" class="btn btn-primary fas fa-chevron-circle-right" value="Upload"></button>
+          </div> 
 
         </div>
       </form>

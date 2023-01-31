@@ -32,7 +32,7 @@ module.exports = {
     }
   },
 
-  //Get individual recipe from app
+  //Get individual recipe from api
   getRecipe: async (req, res) => {
     try {
       console.log('Looking for specific recipe');
@@ -44,7 +44,7 @@ module.exports = {
           //console log data to show object has been return from our request 
           console.log(data);
           //render recipe page
-          res.render("recipe.ejs", { title: "Recipe Lookup", recipe: data });
+          res.render("recipe.ejs", { title: "Recipe Lookup", apiRecipe: data });
         })
     } catch (err) {
       console.log(err);
@@ -60,8 +60,9 @@ module.exports = {
       await Recipe.create({
         name: req.body.recipeName,
         image: req.body.recipeImage,
+        cloudinaryId:'',
         type: req.body.recipeMealtype.split('/'),
-        ingredients: req.body.recipeIngredients.split(","),
+        ingredients: req.body.recipeIngredients,
         instructions: [],
         reference: req.body.recipeReference,
         user: req.user.id,

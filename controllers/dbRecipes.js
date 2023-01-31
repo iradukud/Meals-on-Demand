@@ -10,12 +10,12 @@ module.exports = {
 
       // Uploading/Creating recipe on DB
       await Recipe.create({
-        name: req.body.recipeName,
+        name: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
         image: result.secure_url,
         cloudinaryId: result.public_id,
         type: [req.body.breakfast, req.body.brunch, req.body.lunch, req.body.dinner, req.body.snack, req.body.teatime].filter(x => x != undefined),
         ingredients: req.body.recipeIngredients.split(".").map(x => x.trim()).filter(x => x != ''),
-        instructions: req.body.recipeIngredients.split(".").map(x => x.trim()).filter(x => x != ''),
+        instructions: req.body.recipeInstructions.split(".").map(x => x.trim()).filter(x => x != '') || [],
         reference: req.body.recipeReference,
         user: req.user.id,
       })
@@ -27,27 +27,103 @@ module.exports = {
     }
   },
 
+  //Page controls
   nextPageRecipes: async (req, res) => {
     try {
+      //Extract page number and meal type from the params
       const [num, mealType] = (req.params.number).split('_');
       let recipes = '';
+
+      //Applied necessary filter/search parameters for the DB
       if (mealType != 'default') {
-        recipes = await Recipe.find({ user: req.user.id, type: mealType });
+        recipes = await Recipe.find({ user: req.user.id, type: mealType }).sort({ name: 1 });
       } else {
-        recipes = await Recipe.find({ user: req.user.id })
+        recipes = await Recipe.find({ user: req.user.id }).sort({ name: 1 });
       }
+
+      //Rendered the dashboard with filters applied
       res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: num - 1, filter: mealType });
     } catch (err) {
       console.log(err);
     }
   },
+  //filtering through DB recipes
   filterDBRecipes: async (req, res) => {
     try {
-      console.log(req.params.mealtype)
-      const recipes = await Recipe.find({ user: req.user.id, type: req.params.mealtype });
+      //filter for recipes by meal type
+      const recipes = await Recipe.find({ user: req.user.id, type: req.params.mealtype }).sort({ name: 1 });
+      console.log("filtered DB recipes for specific meal type(s)");
+      //Rendered the dashboard with recipes that fit the meal type 
       res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: 0, filter: req.params.mealtype });
     } catch (err) {
       console.log(err);
+    }
+  },
+  //Get individual recipe from DB
+  getRecipe: async (req, res) => {
+    try {
+      console.log('Looking for specific recipe');
+      //retrieves a recipe from the DB, specifically by ID
+      const recipe = await Recipe.findById({ _id: req.params.id });
+      console.log(recipe);
+      //render recipe page
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  //delete recipe from recipe from DB
+  deleteRecipe: async (req, res) => {
+    try {
+      //find the recipe by id
+      let recipe = await Recipe.findById({ _id: req.params.id });
+      //delete recipe's image from cloudinary
+      await cloudinary.uploader.destroy(recipe.cloudinaryId);
+      //delete recipe from db
+      await Recipe.remove({ _id: req.params.id });
+
+      console.log("Deleted Recipe");
+      res.redirect("/Dashboard");
+    } catch (err) {
+      console.log(err);
+      res.redirect("/Dashboard");
+    }
+  },
+  //edit recipe from recipe from DB
+  editRecipe: async (req, res) => {
+    try {
+
+      //find the recipe by id
+      let recipe = await Recipe.findById({ _id: req.body.recipeId });
+
+      //delete recipe's image from cloudinary
+      if (recipe.cloudinaryId) {
+        await cloudinary.uploader.destroy(recipe.cloudinaryId);
+      }
+      //delete recipe from db
+      await Recipe.remove({ _id: req.body.recipeId })
+
+      // Upload image to cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path)
+
+      //Create new DB recipe
+      await Recipe.create({
+        name: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
+        image: result.secure_url,
+        cloudinaryId: result.public_id,
+        type: [req.body.breakfast, req.body.brunch, req.body.lunch, req.body.dinner, req.body.snack, req.body.teatime].filter(x => x != undefined),
+        ingredients: req.body.recipeIngredients.split(".").map(x => x.trim()).filter(x => x != ''),
+        instructions: req.body.recipeInstructions.split(".").map(x => x.trim()).filter(x => x != '') || [],
+        reference: req.body.recipeReference,
+        user: req.user.id,
+      })
+
+      console.log("Edited Recipe");
+      res.redirect("/Dashboard");
+    } catch (err) {
+      console.log(err);
+      res.redirect("/Dashboard");
     }
   },
 }
