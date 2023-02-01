@@ -78,8 +78,12 @@ module.exports = {
     try {
       //find the recipe by id
       let recipe = await Recipe.findById({ _id: req.params.id });
+      
       //delete recipe's image from cloudinary
-      await cloudinary.uploader.destroy(recipe.cloudinaryId);
+      if (recipe.cloudinaryId) {
+        await cloudinary.uploader.destroy(recipe.cloudinaryId);
+      }
+
       //delete recipe from db
       await Recipe.remove({ _id: req.params.id });
 

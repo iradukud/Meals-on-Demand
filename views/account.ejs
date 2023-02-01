@@ -1,7 +1,91 @@
 <%- include('partials/header') -%>
 <%- include('partials/nav') -%>
 
-<h1>Account</h1>
+<main class="w-100 m-auto text-center">
+  <!-- Heading & Image-->
+  <img class="mb-2 mt-2" src="/imgs/accountImage.png" alt="bookImage" width="100">
+  <h1 class="display-5 fw-bold lh-1 mb-3">Your Account</h1>
 
+  <section class="row justify-content-center">
+    <div class="col-5 mt-3">
+      <%#-- Error alerts --%>
+      <% if (locals.messages.errors) { %>
+      <% messages.errors.forEach( el => { %>
+      <div class="alert alert-danger"><%= el.msg %></div>
+      <% }) %>
+      <% } %>
+
+      <% if (locals.messages.info) { %>
+      <% messages.info.forEach( el => { %>
+      <div class="alert alert-info"><%= el.msg %></div>
+      <% }) %>
+      <% } %>
+
+      <!-- Account information -->
+      <span>
+        <button class="btn-primary fas fa-edit accountEdit"></button>
+        <span class="fw-bold">Username</span>: <%= user['userName']%>
+      </span><br>
+
+      <span>
+        <button class="btn-primary fas fa-edit accountEdit"></button>
+        <span class="fw-bold">Email</span>: <%= user['email']%>
+      </span><br>
+
+      <span>
+        <button class="btn-primary fas fa-edit accountEdit"></button>
+        <span class="fw-bold">Password</span>: xxxxxxx
+      </span><br>
+
+      <!-- Delete account button -->
+      <form action="/delete?_method=DELETE" method="POST">
+        <button class="btn btn-secondary mt-3">Terminate account</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Edit account modal -->
+  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <!-- Form for edit inputs -->
+      <form id="accountForm" method="POST">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="accountModalLabel"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <!-- Old password input -->
+            <div class="mb-3 form-floating">
+              <input type="hidden" class="form-control password" name="oldPassword" placeholder="Password">
+              <label class="passwordLabel" for="oldPassword">Current Password</label>
+            </div>
+
+            <!-- input used to edit DB -->
+            <div class="mb-3 form-floating">
+              <input class="form-control" id="editItem" placeholder="">
+              <label id="editItemLabel"></label>
+            </div>
+
+            <!-- input used to edit DB -->
+            <div class="mb-3 form-floating">
+              <input type="hidden" class="form-control password" name="confirmPassword" placeholder="Password">
+              <label class="passwordLabel" for="confirmPassword">Confirm Password</label>
+            </div>
+          </div>
+
+          <!-- submit edit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+            <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
 
 <%- include('partials/footer') -%>

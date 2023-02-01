@@ -55,14 +55,14 @@ module.exports = {
   saveRecipe: async (req, res) => {
     try {
       console.log("Saving data")
-
+console.log(req.body.recipeIngredients)
       // Uploading/Creating recipe on DB
       await Recipe.create({
         name: req.body.recipeName,
         image: req.body.recipeImage,
         cloudinaryId:'',
         type: req.body.recipeMealtype.split('/'),
-        ingredients: req.body.recipeIngredients,
+        ingredients: req.body.recipeIngredients.split(','),
         instructions: [],
         reference: req.body.recipeReference,
         user: req.user.id,

@@ -1,4 +1,7 @@
 const Recipe = require("../models/Recipe");
+const passport = require("passport");
+const validator = require("validator");
+const User = require("../models/User");
 
 exports.getIndex = (req, res) => {
   //If signed in redirect to dashboard
@@ -21,6 +24,11 @@ exports.getRecipeLookup = (req, res) => {
   res.render("recipeLookup.ejs", { title: "Recipe Lookup" });
 }
 
-exports.getAccount = (req, res) => {
-  res.render("account.ejs", { title: "Account" });
+exports.getAccount = async (req, res) => {
+  try {
+    const user = await User.findById({ _id: req.user.id });
+    res.render("account.ejs", { title: "Account", user: user });
+  } catch (err) {
+    console.log(err);
+  }
 }
