@@ -25,7 +25,7 @@ module.exports = {
           nextPage = data['_links']['next']['href'].split('_').filter(x => x.includes('cont='))[0].split('&')[0]
 
           //render recipe loopup page
-          res.render("recipeLookup.ejs", { title: "Recipe Lookup", recipes: data['hits'], searched: req.body.searchItem, nextRecipes: nextPage });
+          res.render("recipeLookup.ejs", { title: "Recipe Lookup", apiRecipes: data['hits'], searched: req.body.searchItem, nextRecipes: nextPage });
         })
     } catch (err) {
       console.log(err);
@@ -55,12 +55,12 @@ module.exports = {
   saveRecipe: async (req, res) => {
     try {
       console.log("Saving data")
-console.log(req.body.recipeIngredients)
+      console.log(req.body.recipeIngredients)
       // Uploading/Creating recipe on DB
       await Recipe.create({
         name: req.body.recipeName,
         image: req.body.recipeImage,
-        cloudinaryId:'',
+        cloudinaryId: '',
         type: req.body.recipeMealtype.split('/'),
         ingredients: req.body.recipeIngredients.split(','),
         instructions: [],

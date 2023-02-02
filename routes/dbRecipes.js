@@ -5,12 +5,14 @@ const dbRecipeController = require("../controllers/dbRecipes");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 /* Recipe Routes */
-router.post("/create", upload.single("recipeImage"), dbRecipeController.createRecipes);
+router.post("/create", upload.single("recipeImage"), dbRecipeController.createRecipe);
 router.get("/page/:number", dbRecipeController.nextPageRecipes);
 router.get("/filter/:mealtype", dbRecipeController.filterDBRecipes);
 router.get("/:id", dbRecipeController.getRecipe);
 router.delete("/delete/:id", dbRecipeController.deleteRecipe);
 router.put("/edit", upload.single("recipeImage"),dbRecipeController.editRecipe)
+router.post("/lookup", dbRecipeController.getSearchRecipes);
+router.get("/pageLook/:number", dbRecipeController.nextLookPageRecipes)
 
 
 module.exports = router;

@@ -3,7 +3,7 @@ const cloudinary = require("../middleware/cloudinary");
 
 module.exports = {
   //Create a new recipe 
-  createRecipes: async (req, res) => {
+  createRecipe: async (req, res) => {
     try {
       // Upload image to cloudinary
       const result = await cloudinary.uploader.upload(req.file.path)
@@ -47,6 +47,7 @@ module.exports = {
       console.log(err);
     }
   },
+
   //filtering through DB recipes
   filterDBRecipes: async (req, res) => {
     try {
@@ -59,6 +60,7 @@ module.exports = {
       console.log(err);
     }
   },
+
   //Get individual recipe from DB
   getRecipe: async (req, res) => {
     try {
@@ -73,12 +75,13 @@ module.exports = {
       console.log(err);
     }
   },
+
   //delete recipe from recipe from DB
   deleteRecipe: async (req, res) => {
     try {
       //find the recipe by id
       let recipe = await Recipe.findById({ _id: req.params.id });
-      
+
       //delete recipe's image from cloudinary
       if (recipe.cloudinaryId) {
         await cloudinary.uploader.destroy(recipe.cloudinaryId);
@@ -94,6 +97,7 @@ module.exports = {
       res.redirect("/Dashboard");
     }
   },
+
   //edit recipe from recipe from DB
   editRecipe: async (req, res) => {
     try {
@@ -113,7 +117,7 @@ module.exports = {
 
       //Create new DB recipe
       await Recipe.create({
-        name: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
+        c: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
         image: result.secure_url,
         cloudinaryId: result.public_id,
         type: [req.body.breakfast, req.body.brunch, req.body.lunch, req.body.dinner, req.body.snack, req.body.teatime].filter(x => x != undefined),
@@ -128,6 +132,33 @@ module.exports = {
     } catch (err) {
       console.log(err);
       res.redirect("/Dashboard");
+    }
+  },
+
+  //get searched recipes from DB
+  getSearchRecipes: async (req, res) => {
+    try {
+      const recipes = await Recipe.find({ user: req.user.id, name: { "$regex": req.body.searchItem, "$options": "i" } }).sort({ name: 1 });
+      res.render("recipeLookup.ejs", { title: "Recipe Lookup", dbRecipes: recipes, filter: req.body.searchItem, page: 0 });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  //Page controls
+  nextLookPageRecipes: async (req, res) => {
+    try {
+      //Extract page number and meal type from the params
+      const [num, searched] = (req.params.number).split('_');
+      let recipes = '';
+
+      //searched next set of searched recipes from the DB
+      recipes = await Recipe.find({ user: req.user.id, name: { "$regex": searched, "$options": "i" } }).sort({ name: 1 });
+
+      //Rendered the dashboard with filters applied
+      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: num - 1, filter: searched });
+    } catch (err) {
+      console.log(err);
     }
   },
 }

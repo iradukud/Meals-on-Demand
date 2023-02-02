@@ -96,11 +96,19 @@ $('.accountEdit').click(function () {
     //Set the input value
     if (property != 'password') {
         editItem.setAttribute('value', value)
-    }else{
+    } else {
         editItem.setAttribute('value', '')
     }
 
     //Set label attributes and text
     document.getElementById('editItemLabel').setAttribute('for', property)
     document.getElementById('editItemLabel').innerText = presProperty
+})
+
+$('#lookApi').click(function () {
+    document.querySelector('#searchForm').action = '/apiRecipes/lookup'
+})
+
+$('#lookDb').click(function () {
+    document.querySelector('#searchForm').action = '/dbRecipes/lookup'
 })

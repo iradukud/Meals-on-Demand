@@ -64,7 +64,7 @@
           </li>
 
           <%# first page %>
-          <li class="page-item <%= page==0? "active" : "" %>"><a class="page-link" href="/dashboard">1</a></li>
+          <li class="page-item <%= page==0? "active" : "" %>"><a class="page-link" href="/dbRecipes/page/1_<%=filter%>">1</a></li>
           <%}%>
 
           <%# next 3 pages %>
@@ -74,7 +74,7 @@
           <%}%>
 
         <%# Next page %>
-          <%if(page!=Math.ceil(recipes.length/8)){%>
+          <%if(itemEnd<recipes.length){%>
           <li class="page-item">
             <a class="page-link" href="/dbRecipes/page/<%=page+2%>_<%=filter%>" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
