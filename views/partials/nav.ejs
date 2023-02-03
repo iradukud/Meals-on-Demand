@@ -1,15 +1,15 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
   <div class="container-fluid">
-    <!-- Links to user dashboard -->
+    <!-- links to user dashboard -->
     <a class="navbar-brand" href="/">Meals on Demand</a>
 
-    <!-- Dropdown of menu button -->
+    <!-- Dropdown of menu items -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Nav items -->
+    <!-- nav items -->
     <div class="collapse navbar-collapse" id="navbarCollapse">
 
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
@@ -24,17 +24,17 @@
         </li>
       </ul>
 
-      <!-- Button trigger add recipe modal -->
+      <!-- button trigger add recipe modal -->
       <div class="justify-content-lg-end">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#recipeModal" id="addRecipe">
           Create Recipe
         </button>
       </div>
+
       <!-- logout button -->
       <div class="d-lg-flex col-sm-1 justify-content-lg-end">
-        <a href="/logout" class="btn btn-primary">Logout</a>
+        <a href="/auth/logout" class="btn btn-primary">Logout</a>
       </div>
-
     </div>
   </div>
 </nav>
@@ -48,21 +48,22 @@
         <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <!-- Form collecting user inputs -->
+      <!-- form collecting user inputs -->
       <form action="/dbRecipes/create" enctype="multipart/form-data" id="recipeForm" method='POST'>
         <div class="modal-body">
-          <!-- Recipe's name -->
+          
+          <!-- recipe name -->
           <div class="mb-3 form-floating">
             <input type="text" class="form-control" id="recipeName" aria-describedby="recipeNameHelp" name="recipeName" placeholder="Recipe name" required>
             <label for="recipeName">Recipe name</label>
           </div>
 
-          <!-- Recipe's image -->
+          <!-- recipe image -->
           <div class="mb-3">
             <input type="file" class="form-control" id="imageUpload" aria-describedby="recipeImageHelp" name="recipeImage" placeholder="Recipe image" required>
           </div>
 
-          <!-- Recipe's type -->
+          <!-- recipe type -->
           <fieldset>
             <div class="d-flex justify-content-center">
               <legend>Choose your recipe's type(s)</legend>
@@ -83,7 +84,7 @@
             </div>
           </fieldset>
 
-          <!-- Recipe's ingredients -->
+          <!-- recipe ingredients -->
           <div class="mb-3">
             <fieldset>
               <div class="d-flex justify-content-center">
@@ -95,7 +96,7 @@
             </fieldset>
           </div>
 
-          <!-- Recipe's instructions -->
+          <!-- recipe instructions -->
           <div class="mb-3">
             <fieldset>
               <div class="d-flex justify-content-center">
@@ -107,7 +108,7 @@
             </fieldset>
           </div>
 
-          <!-- Recipe's reference -->
+          <!-- recipe reference -->
           <div class="mb-3 form-floating">
             <input type="text" class="form-control" id="recipeReference" aria-describedby="recipeReferenceHelp" name="recipeReference" placeholder="Recipe reference">
             <label for="recipeReference">Recipe source</label>
@@ -122,7 +123,6 @@
 
         </div>
       </form>
-
     </div>
   </div>
 </div>

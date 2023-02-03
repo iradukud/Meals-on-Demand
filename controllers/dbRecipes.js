@@ -3,24 +3,25 @@ const cloudinary = require("../middleware/cloudinary");
 
 
 module.exports = {
-  //Create a new recipe 
+  //create a new recipe 
   createRecipe: async (req, res) => {
     try {
       //variable that will store default image's url
       let defaultImage = ''
 
-      // Upload image to cloudinary
+      //variable that will store provided image to cloud
       let result = ''
 
+      //assign above variable depending if a file was provide
       if (!req.file) {
         //use default image
         defaultImage = 'https://res.cloudinary.com/dwwcootcr/image/upload/v1675384027/recipe-default-image_jabkjh.png'
       } else {
-        // Upload image to cloudinary
+        //upload image to cloudinary
         result = await cloudinary.uploader.upload(req.file.path)
       }
 
-      // Uploading/Creating recipe on DB
+      //uploading/create recipe on DB
       await Recipe.create({
         name: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
         image: result.secure_url || defaultImage,
@@ -31,85 +32,96 @@ module.exports = {
         reference: req.body.recipeReference || '',
         user: req.user.id,
       })
-
       console.log("recipe has been added!");
+      //sending confirmation message w/redirect
+      req.flash("info", { msg: "Recipe has been added!" });
       res.redirect("/dashboard");
     } catch (err) {
       console.log(err);
+      //sending error message w/redirect
+      req.flash("error", { msg: "Due to an error the Recipe was not added!" });
+      res.redirect("/dashboard");
     }
   },
 
-  //Page controls
+  //page controls for DB result, presented on Dashboard
   nextPageRecipes: async (req, res) => {
     try {
-      //Extract page number and meal type from the params
+      //extract page number and meal type from the params
       const [num, mealType] = (req.params.number).split('_');
+      //variable that will hold the recipes retrieved
       let recipes = '';
 
-      //Applied necessary filter/search parameters for the DB
+      //assigned recipe variable depending on inputs provided
       if (mealType != 'default') {
         recipes = await Recipe.find({ user: req.user.id, type: mealType }).sort({ name: 1 });
       } else {
         recipes = await Recipe.find({ user: req.user.id }).sort({ name: 1 });
       }
 
-      //Rendered the dashboard with filters applied
-      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: num - 1, filter: mealType });
+      //render dashboard with user's recipe and other parameters (title, page, filter)
+      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, page: num - 1, filter: mealType });
     } catch (err) {
       console.log(err);
     }
   },
 
-  //filtering through DB recipes
+  //applying filter to dashboard(DB) recipes
   filterDBRecipes: async (req, res) => {
     try {
-      //filter for recipes by meal type
+      //retrieve user recipes that match filter
       const recipes = await Recipe.find({ user: req.user.id, type: req.params.mealtype }).sort({ name: 1 });
+
       console.log("filtered DB recipes for specific meal type(s)");
-      //Rendered the dashboard with recipes that fit the meal type 
-      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: 0, filter: req.params.mealtype });
+      //render dashboard with user's recipe filtered and other parameters (title, page, filter)
+      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, page: 0, filter: req.params.mealtype });
     } catch (err) {
       console.log(err);
     }
   },
 
-  //Get individual recipe from DB
+  //retrieve individual recipe from DB
   getRecipe: async (req, res) => {
     try {
       console.log('Looking for specific recipe');
       //retrieves a recipe from the DB, specifically by ID
       const recipe = await Recipe.findById({ _id: req.params.id });
-      console.log(recipe);
-      //render recipe page
+      
+      //render recipe page with user's selected recipe
       res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
-
     } catch (err) {
       console.log(err);
     }
   },
 
-  //delete recipe from recipe from DB
+  //delete a recipe from recipe from DB
   deleteRecipe: async (req, res) => {
-    try {
-      //find the recipe by id
-      let recipe = await Recipe.findById({ _id: req.params.id });
+    //find the recipe by id
+    let recipe = await Recipe.findById({ _id: req.params.id });
 
-      //delete recipe's image from cloudinary
+    try {
+      //delete recipe's image from cloudinary, if it was stored there
       if (recipe.cloudinaryId) {
         await cloudinary.uploader.destroy(recipe.cloudinaryId);
       }
 
-      //delete recipe from db
+      //delete recipe from DB
       await Recipe.remove({ _id: req.params.id });
 
       console.log("Deleted Recipe");
-      res.redirect("/Dashboard");
+      //sending confirmation message w/redirect
+      req.flash("info", { msg: "Recipe was deleted!" });
+      res.redirect("/dashboard");
     } catch (err) {
       console.log(err);
-      res.redirect("/Dashboard");
+      //sending error message w/redirect
+      req.flash("error", { msg: "The recipe was not deleted!" });
+      //render recipe page with user's selected recipe
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe })
     }
   },
 
+  /* disabled for now
   //edit recipe from recipe from DB
   editRecipe: async (req, res) => {
     try {
@@ -121,7 +133,7 @@ module.exports = {
       if (recipe.cloudinaryId) {
         await cloudinary.uploader.destroy(recipe.cloudinaryId);
       }
-      
+
       //delete recipe from db
       await Recipe.remove({ _id: req.body.recipeId })
 
@@ -147,31 +159,40 @@ module.exports = {
       res.redirect("/Dashboard");
     }
   },
+  */
 
   //get searched recipes from DB
   getSearchRecipes: async (req, res) => {
     try {
+      //retrieves recipes from the DB, specifically by searched string
       const recipes = await Recipe.find({ user: req.user.id, name: { "$regex": req.body.searchItem, "$options": "i" } }).sort({ name: 1 });
+      //render recipe lookup page with user's searched recipe(s)
       res.render("recipeLookup.ejs", { title: "Recipe Lookup", dbRecipes: recipes, filter: req.body.searchItem, page: 0 });
     } catch (err) {
       console.log(err);
+      //sending error message w/redirect
+      req.flash("error", { msg: "The search was not completed!" });
+      //render recipe lookup page
+      res.render("recipeLookup.ejs", { title: "Recipe Lookup" });
     }
   },
 
-  //Page controls
+  //page controls on the recipe look page
   nextLookPageRecipes: async (req, res) => {
     try {
-      //Extract page number and meal type from the params
+      //extract page number and meal type from the params
       const [num, searched] = (req.params.number).split('_');
-      let recipes = '';
 
       //searched next set of searched recipes from the DB
-      recipes = await Recipe.find({ user: req.user.id, name: { "$regex": searched, "$options": "i" } }).sort({ name: 1 });
+      const recipes = await Recipe.find({ user: req.user.id, name: { "$regex": searched, "$options": "i" } }).sort({ name: 1 });
 
-      //Rendered the dashboard with filters applied
-      res.render("dashboard.ejs", { title: "Dashboard", recipes: recipes, user: req.user, page: num - 1, filter: searched });
+      //rendered the recipe lookup page with filters applied
+      res.render("recipeLookup.ejs", { title: "Recipe Lookup", recipes: recipes, page: num - 1, filter: searched });
     } catch (err) {
       console.log(err);
+      req.flash("error", { msg: "Next page could not be retrieved!" });
+      //render recipe lookup page
+      res.render("recipeLookup.ejs", { title: "Recipe Lookup" });
     }
   },
 }

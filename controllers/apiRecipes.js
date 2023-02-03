@@ -1,62 +1,55 @@
 const Recipe = require("../models/Recipe");
 
 module.exports = {
-  //Get list of recipes from the API
+  //get list of recipes from the API
   getRecipes: async (req, res) => {
     try {
+      //variable used in the fetch api
       let nextPage = '' || req.body.next,
-        url = ''
+        url = '';
 
+      //determine url depending on user's request  
       if (req.body.next) {
-        url = `https://api.edamam.com/api/recipes/v2?q=${req.body.searchItem}&app_key=${process.env.FOOD_KEY}&_${nextPage}&type=public&app_id=${process.env.FOOD_ID}`
+        url = `https://api.edamam.com/api/recipes/v2?q=${req.body.searchItem}&app_key=${process.env.FOOD_KEY}&_${nextPage}&type=public&app_id=${process.env.FOOD_ID}`;
       } else {
-        url = `https://api.edamam.com/api/recipes/v2?type=public&q=${req.body.searchItem}&app_id=${process.env.FOOD_ID}&app_key=${process.env.FOOD_KEY}`
-      }
-      console.log('Looking for recipes');
+        url = `https://api.edamam.com/api/recipes/v2?type=public&q=${req.body.searchItem}&app_id=${process.env.FOOD_ID}&app_key=${process.env.FOOD_KEY}`;
+      };
 
       //fetches recipes from the EDAMAM api, specifically by name(s)
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          //console log data to show object has been return from our request 
-          console.log(data);
+      const response = await fetch(url);
+      const recipes = await response.json();
 
-          //extract the link to the next page from the data,, whilst hiding api keys
-          nextPage = data['_links']['next']['href'].split('_').filter(x => x.includes('cont='))[0].split('&')[0]
+      //extract the link to the next page from the data,, whilst hiding api keys
+      nextPage = recipes['_links']['next']['href'].split('_').filter(x => x.includes('cont='))[0].split('&')[0];
 
-          //render recipe loopup page
-          res.render("recipeLookup.ejs", { title: "Recipe Lookup", apiRecipes: data['hits'], searched: req.body.searchItem, nextRecipes: nextPage });
-        })
+      console.log('Recipes fetched from API');
+      //render recipe lookup page with additionally data (searched item, next recipes)
+      res.render("recipeLookup.ejs", { title: "Recipe Lookup", apiRecipes: recipes['hits'], searched: req.body.searchItem, nextRecipes: nextPage });
     } catch (err) {
       console.log(err);
-    }
+    };
   },
 
-  //Get individual recipe from api
+  //get individual recipe from the API
   getRecipe: async (req, res) => {
     try {
-      console.log('Looking for specific recipe');
-
       //fetches a recipe from the EDAMAM api, specifically by ID
-      fetch(url = `https://api.edamam.com/api/recipes/v2/${req.params.id}?type=public&app_id=${process.env.FOOD_ID}&app_key=${process.env.FOOD_KEY}`)
-        .then(res => res.json())
-        .then(data => {
-          //console log data to show object has been return from our request 
-          console.log(data);
-          //render recipe page
-          res.render("recipe.ejs", { title: "Recipe Lookup", apiRecipe: data });
-        })
+      const response = await fetch(`https://api.edamam.com/api/recipes/v2/${req.params.id}?type=public&app_id=${process.env.FOOD_ID}&app_key=${process.env.FOOD_KEY}`);
+      const recipe = await response.json();
+      
+      //render recipe page
+      res.render("recipe.ejs", { title: "Recipe Lookup", apiRecipe: recipe });
     } catch (err) {
       console.log(err);
     }
   },
 
-  //Save the recipe details to 
+  //save the recipe details to DB 
   saveRecipe: async (req, res) => {
     try {
-      console.log("Saving data")
       console.log(req.body.recipeIngredients)
-      // Uploading/Creating recipe on DB
+      
+      //uploading/creating recipe on DB
       await Recipe.create({
         name: req.body.recipeName,
         image: req.body.recipeImage,
@@ -68,6 +61,8 @@ module.exports = {
         user: req.user.id,
       })
       console.log("recipe has been added!");
+      //redirect to dashboard with information message
+      req.flash("info", { msg: "Recipe was saved" });
       res.redirect("/dashboard");
 
     } catch (err) {

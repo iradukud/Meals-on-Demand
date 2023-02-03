@@ -2,10 +2,6 @@
 $('#addRecipe').click(function () {
     //show recipe modal
     $('#recipeModal').modal('show');
-    //present right route
-    document.querySelector('#recipeForm').action = 'dbRecipes/create'
-    //present right recipe label
-    document.querySelector('#recipeModalLabel').innerText = 'Create new recipe'
 })
 
 //trigger & event for closing popup
@@ -16,6 +12,8 @@ $('.close').click(function () {
     $('#accountModal').modal('hide');
 })
 
+/*
+temporarily disabled as better edit implementation are being worked on
 //trigger & event for edit recippe click
 $('#editRecipe').click(function () {
     //show recipe modal
@@ -40,10 +38,10 @@ $('#editRecipe').click(function () {
     id.setAttribute('value', document.querySelector('#recipeId').innerText)
     document.querySelector('.modal-body').appendChild(id)
 })
+*/
 
 
-
-//trigger & event for edit account (password, email and username) click
+//trigger event for edit account (password, email and username) click
 $('.accountEdit').click(function () {
     $('#accountModal').modal('show');
 
@@ -52,16 +50,16 @@ $('.accountEdit').click(function () {
     const value = this.parentNode.innerText.split(':')[1].trim()
     const presProperty = property.slice(0, 1).toUpperCase() + property.slice(1).toLowerCase()
 
-    //Set popup label 
+    //set popup label 
     document.querySelector('#accountModalLabel').innerText = `Edit Account - ${presProperty}`
 
-    //Set form's action
-    document.querySelector('#accountForm').action = `/edit${presProperty}?_method=PUT`
+    //set form's action
+    document.querySelector('#accountForm').action = `/auth/edit${presProperty}?_method=PUT`
 
     //store modal input in variable
     const editItem = document.getElementById('editItem')
 
-    //Set the input type depending on what's being edited
+    //set the input type depending on what's being edited
     if (property == 'email') {
         //Keep password items hidden
         document.querySelectorAll('.password').forEach(input => input.setAttribute('type', 'hidden'))
@@ -70,30 +68,33 @@ $('.accountEdit').click(function () {
 
         //set input type of main input
         editItem.setAttribute('type', 'email')
+
     } else if (property == 'password') {
         //Show hidden password items
         document.querySelectorAll('.password').forEach(input => input.setAttribute('type', 'password'))
         document.querySelectorAll('.passwordLabel').forEach((label, i) => label.style.visibility = "visible")
         document.querySelectorAll('.password').forEach(input => input.disabled = false)
+
         //set input type of main input
         editItem.setAttribute('type', 'password')
     } else {
-        //Keep password items hidden
+        //keep password items hidden
         document.querySelectorAll('.password').forEach(input => input.setAttribute('type', 'hidden'))
         document.querySelectorAll('.passwordLabel').forEach(label => label.style.visibility = "hidden")
         document.querySelectorAll('.password').forEach(input => input.disabled = true)
+
         //set input type of main input
         editItem.setAttribute('type', 'text')
     }
 
-    //Set the input aria-describedby
+    //set the input aria-describedby
     editItem.setAttribute('aria-describedby', `${property}Help`)
 
-    //Set the input name
+    //set the input name
     editItem.setAttribute('name', property)
 
 
-    //Set the input value
+    //set the input value
     if (property != 'password') {
         editItem.setAttribute('value', value)
     } else {
@@ -105,10 +106,24 @@ $('.accountEdit').click(function () {
     document.getElementById('editItemLabel').innerText = presProperty
 })
 
+//change action of lookup form when user clicks search api
 $('#lookApi').click(function () {
     document.querySelector('#searchForm').action = '/apiRecipes/lookup'
 })
 
+//change action of lookup form when user clicks search DB
 $('#lookDb').click(function () {
     document.querySelector('#searchForm').action = '/dbRecipes/lookup'
 })
+
+
+
+//edit ingredients
+//delete ingredients
+
+//edit instructions
+//delete instructions
+
+//edit name
+//edit reference
+//edit image

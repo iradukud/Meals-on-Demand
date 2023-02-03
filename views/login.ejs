@@ -4,51 +4,47 @@
   <div class="row justify-content-center">
     <section class="col-6 mt-5">
 
-      <%#-- Error alerts - invalid inputs --%>
-      <% if (locals.messages.errors) { %>
-      <% messages.errors.forEach( el=> { %>
+      <%
+        //error alerts 
+        if (locals.messages.errors) { 
+          messages.errors.forEach( el=> { 
+      %>
       <div class="alert alert-danger"><%= el.msg %></div>
-      <% }) %>
-      <% } %>
+      <% 
+          }); 
+        }; 
+      %>
 
-      <%#-- Error alerts - failed authentification --%>
-      <% if (locals.messages.info) { %>
-      <% messages.info.forEach( el=> { %>
-      <div class="alert alert-info"><%= el.msg %></div>
-      <% }) %>
-      <% } %>
-
-      <!-- Login form -->
-      <form action="/login" method="POST">
-        <%#-- Logos --%>
+      <%# login form %>
+      <form action="/auth/login" method="POST">
+        <%# logos %>
         <a href="/"><img class="mb-4" src="/imgs/logoIcon.png" alt="logoIcon" width="72" height="57"></a>
         <h1 class="h3 mb-3 fw-normal">Meals on Demand</h1>
 
-        <!-- Email input -->
+        <%# email input %>
         <div class="mb-3 form-floating">
           <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="name@example.com">
           <label for="email">Email address</label>
         </div>
 
-        <!-- Password input -->
+        <%# password input %>
         <div class="form-floating">
           <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
           <label for="password">Password</label>
         </div>
 
-        <!-- Remember user checkbox -->
+        <%# remember user checkbox %>
         <div class="checkbox mb-3">
           <label>
             <input type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
 
-        <!-- Submission links/buttons -->
+        <%# submission links/buttons %>
         <button class="btn btn-primary btn-lg px-4 me-md-2" type="submit">Login</button>
         <h5 class="h5 mb-3 mt-3 fw-normal">Don't have an account?</h5>
         <a href="/signup" class="mb-3 btn btn-outline-secondary btn-lg px-4">Sign up</a>
       </form>
-
     </section>
   </div>
 </main>

@@ -2,11 +2,22 @@
 <%- include('partials/nav') -%>
 
 <main class="w-100 m-auto text-center">
-  <!-- Heading & Image-->
+  <%# heading & image %>
   <img class="mb-2 mt-2" src="/imgs/bookImage.png" alt="bookImage" width="100">
   <h1 class="display-5 fw-bold lh-1 mb-3 text-center">Recipe Lookup</h1>
 
-  <!-- Form that looks up recipes-->
+  <% 
+    //error alerts
+    if (locals.messages.errors) { 
+      messages.errors.forEach( el=> { 
+  %>
+  <div class="alert alert-danger"><%= el.msg %></div>
+  <% 
+      });
+    }; 
+  %>
+
+  <%# form used to looks up recipes from DB & API %>
   <section class="row justify-content-center">
     <div class="col-5 mt-3">
       <form class="form-floating" method="POST" id="searchForm">
@@ -18,135 +29,151 @@
     </div>
   </section>
 
-  <%#- variables plugged into recipe display %>
   <%  
-    let recipes = []
-    let itemStart = ''
-    let itemEnd = ''
-  %>
-
-  <%#- Recipe from API /apiRecipes/ %>
-  <%
-  if (typeof apiRecipes!='undefined') {
-    //link = apiRecipes['recipe']['uri'].split('_').pop()
-    //name = apiRecipes['recipe']['label']
-    //image = apiRecipes['recipe']['image']
-    recipes = apiRecipes
-    itemStart = 0
-    itemEnd = 20
-  }
-  %>
-
-  <%#- Recipe from DB %>
-  <% 
-  if (typeof dbRecipes!='undefined') { 
-    recipes = dbRecipes
-    itemStart = page*20
-    itemEnd = (page+1)*20
-  }
-  %>
-
-  <%#- Recipes generated from the search request via API %>
-  <section class="row mt-5 px-5">
-    <%# Loop through a set number of recipes and present %>
-    <% for(i=itemStart;i<itemEnd;i++){%>
-      <% if(i>recipes.length-1){break}%>
-      <%  
-      link = ''
-      name = ''
-      image = ''
-    %>
+    //variables used for loop parameters
+    let recipes = [];
+    let itemStart = '';
+    let itemEnd = '';
   
-    <%#- Recipe from API %>
-    <%
+    // Recipe from API
     if (typeof apiRecipes!='undefined') {
-      link = '/apiRecipes/'+recipes[i]['recipe']['uri'].split('_').pop()
-      name = recipes[i]['recipe']['label']
-      image = recipes[i]['recipe']['image']
-    }
-    %>
-  
-    <%#- Recipe from DB %>
-    <% 
+      recipes = apiRecipes;
+      itemStart = 0;
+      itemEnd = 20;
+    };
+
+    //recipe from DB
     if (typeof dbRecipes!='undefined') { 
-      link = '/dbRecipes/'+recipes[i]['_id']
-      name = recipes[i]['name']
-      image = recipes[i]['image']
-    }
+      recipes = dbRecipes;
+      itemStart = page*20;
+      itemEnd = (page+1)*20;
+    };
+  %>
+
+  <%#- recipes generated from the search request via API %>
+  <section class="row mt-5 px-5">
+    <%# loop through a set (20 item) number of recipes %>
+    <% 
+      for(i=itemStart;i<itemEnd;i++){
+        if(i>recipes.length-1){
+          break;
+        };
+    
+        //variables plugged into recipe display and
+        link = '';
+        name = '';
+        image = '';
+    
+        //recipe from API
+        if (typeof apiRecipes!='undefined') {
+          link = '/apiRecipes/'+recipes[i]['recipe']['uri'].split('_').pop();
+          name = recipes[i]['recipe']['label'];
+          image = recipes[i]['recipe']['image'];
+        };
+    
+        //recipe from DB
+        if (typeof dbRecipes!='undefined') { 
+          link = '/dbRecipes/'+recipes[i]['_id'];
+          name = recipes[i]['name'];
+          image = recipes[i]['image'];
+        };
     %>
-    <%# Container for Each recipe %>
+
+    <%# container for each recipe %>
     <div class="col-md-3 themed-grid-col mb-3">
-
       <div class="card shadow-sm">
-
-        <%# Recipe image %>
+        <%# recipe image %>
         <a href="<%= link %>">
           <img class="card-img-top" width="100%" height="300" src="<%= image %>"></img>
         </a>
 
-        <%# Recipe name %>
+        <%# recipe name %>
         <div class="card-body">
           <a href="<%= link %>">
             <p class="card-text "><%= name %></p>
           </a>
         </div>
       </div>
-
     </div>
-    <%}%>
+    <%
+      };
+    %>
   </section>
 
-  <% if (typeof apiRecipes!='undefined') { %>
+  <%# page navigation controls for API results %>
+  <% 
+    if (typeof apiRecipes!='undefined') { 
+  %>
   <div class="d-flex justify-content-around align-items-center px-4 mt-3 mb-5">
+    <%# back button %>
     <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">Back</button>
-    <%# Next papge from the api %>
+
+    <%# next page from the api %>
     <form action="/apiRecipes/lookup" method="POST">
       <input type="hidden" name="searchItem" value="<%=searched%>">
       <input type="hidden" name="next" value="<%=nextRecipes%>">
       <button class="btn btn-primary btn-lg" type="submit">Next page</button>
     </form>
   </div>
-  <% } %>
+  <%
+    };
+  %>
 
-  <% if (typeof dbRecipes!='undefined') { %>
-    <%# Page navigation %>
-    <div class="d-flex justify-content-center mt-5">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <%# Previous page %>
-          <% if(page!=0){%>
-          <li class="page-item">
-            <a class="page-link" href="/dbRecipes/pageLook/<%=page%>_<%=filter%>" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-    
-          <%# first page %>
-          <li class="page-item <%= page==0? "active" : "" %>"><a class="page-link" href="/dbRecipes/pageLook/1_<%=filter%>">1</a></li>
-          <%}%>
-    
-          <%# next 3 pages %>
-          <%for(navPage=page;navPage<Math.ceil(recipes.length/20);navPage++){%>
-          <% if(navPage==page+4){break}%>
-          <li class="page-item <%= page==navPage? "active" : "" %>"><a class="page-link" href="/dbRecipes/pageLook/<%=navPage+1%>_<%=filter%>"><%=navPage+1%></a></li>
-          <%}%>
-    
-        <%# Next page %>
-          <%if(itemEnd<recipes.length){%>
-          <li class="page-item">
-            <a class="page-link" href="/dbRecipes/pageLook/<%=page+2%>_<%=filter%>" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-          
-          <%}%>
+  <%# page navigation controls for DB results %>
+  <% 
+    if (typeof dbRecipes!='undefined') { 
+  %>
+  <div class="d-flex justify-content-center mt-5">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <%# previous page %>
+        <% 
+          if(page!=0){
+        %>
+        <li class="page-item">
+          <a class="page-link" href="/dbRecipes/pageLook/<%=page%>_<%=filter%>" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+
+        <%# first page %>
+        <li class="page-item <%= page==0? "active" : "" %>"><a class="page-link" href="/dbRecipes/pageLook/1_<%=filter%>">1</a></li>
+        <%
+          };
+        %>
+
+        <%# next 3 pages, if they exist %>
+        <% 
+          for(navPage=page;navPage<Math.ceil(recipes.length/20);navPage++){
+            if(navPage==page+4){
+              break;
+            };
+        %>
+        <li class="page-item <%= page==navPage? "active" : "" %>"><a class="page-link" href="/dbRecipes/pageLook/<%=navPage+1%>_<%=filter%>"><%=navPage+1%></a></li>
+        <%
+          };
+        %>
+
+        <%# next page %>
+        <% 
+          if(itemEnd<recipes.length){ 
+        %>
+        <li class="page-item">
+          <a class="page-link" href="/dbRecipes/pageLook/<%=page+2%>_<%=filter%>" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+        <%
+          }
+        %>
       </ul>
     </nav>
-    <% } %>
-
+  </div>
+  <%
+    };
+  %>
 </main>
-
 
 <%- include('partials/footer') -%>

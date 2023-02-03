@@ -9,35 +9,36 @@ const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
 const mainRoutes = require("./routes/main");
+const authRoutes = require("./routes/auth");
 const apiRecipeRoutes = require("./routes/apiRecipes");
 const dbRecipeRoutes = require("./routes/dbRecipes");
 
-//Use .env file in config folder
+//use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
 
-// Passport config
+//passport config
 require("./config/passport")(passport);
 
 //Connect To Database
 connectDB();
 
-//Using EJS for views
+//using EJS for views
 app.set("view engine", "ejs");
 
-//Static Folder
+//static folder
 app.use(express.static("public"));
 
-//Body Parsing
+//body Parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Logging
+//logging
 app.use(logger("dev"));
 
-//Use forms for put / delete
+//use forms for put / delete
 app.use(methodOverride("_method"));
 
-// Setup Sessions - stored in MongoDB
+//setup sessions - stored in MongoDB
 app.use(
   session({
     secret: "keyboard cat",
@@ -47,19 +48,20 @@ app.use(
   })
 );
 
-// Passport middleware
+//passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Use flash messages for errors, info, ect...
+//use flash messages for errors, info, ect...
 app.use(flash());
 
-//Setup Routes For Which The Server Is Listening
+//setup routes for which the server is listening
 app.use("/", mainRoutes);
 app.use("/apiRecipes", apiRecipeRoutes);
 app.use("/dbRecipes", dbRecipeRoutes);
+app.use("/auth", authRoutes);
 
-//Server Running
+//server running
 app.listen(process.env.PORT, () => {
   console.log("Server is running, you better catch it!");
 });
