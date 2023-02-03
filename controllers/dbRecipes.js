@@ -1,22 +1,34 @@
 const Recipe = require("../models/Recipe");
 const cloudinary = require("../middleware/cloudinary");
 
+
 module.exports = {
   //Create a new recipe 
   createRecipe: async (req, res) => {
     try {
+      //variable that will store default image's url
+      let defaultImage = ''
+
       // Upload image to cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path)
+      let result = ''
+
+      if (!req.file) {
+        //use default image
+        defaultImage = 'https://res.cloudinary.com/dwwcootcr/image/upload/v1675384027/recipe-default-image_jabkjh.png'
+      } else {
+        // Upload image to cloudinary
+        result = await cloudinary.uploader.upload(req.file.path)
+      }
 
       // Uploading/Creating recipe on DB
       await Recipe.create({
         name: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
-        image: result.secure_url,
-        cloudinaryId: result.public_id,
+        image: result.secure_url || defaultImage,
+        cloudinaryId: result.public_id || '',
         type: [req.body.breakfast, req.body.brunch, req.body.lunch, req.body.dinner, req.body.snack, req.body.teatime].filter(x => x != undefined),
-        ingredients: req.body.recipeIngredients.split(".").map(x => x.trim()).filter(x => x != ''),
+        ingredients: req.body.recipeIngredients.split(".").map(x => x.trim()).filter(x => x != '') || [],
         instructions: req.body.recipeInstructions.split(".").map(x => x.trim()).filter(x => x != '') || [],
-        reference: req.body.recipeReference,
+        reference: req.body.recipeReference || '',
         user: req.user.id,
       })
 
@@ -109,6 +121,7 @@ module.exports = {
       if (recipe.cloudinaryId) {
         await cloudinary.uploader.destroy(recipe.cloudinaryId);
       }
+      
       //delete recipe from db
       await Recipe.remove({ _id: req.body.recipeId })
 
@@ -117,7 +130,7 @@ module.exports = {
 
       //Create new DB recipe
       await Recipe.create({
-        c: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
+        name: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
         image: result.secure_url,
         cloudinaryId: result.public_id,
         type: [req.body.breakfast, req.body.brunch, req.body.lunch, req.body.dinner, req.body.snack, req.body.teatime].filter(x => x != undefined),
