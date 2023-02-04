@@ -100,9 +100,20 @@
             <%= ingredient %>
           </li>
           <%
-            })
+            });
+            
+            //add ingredients if recipe is from DB
+            if (typeof dbRecipe!='undefined') { 
           %>
-
+          <div>
+            <%# button trigger add modal %>
+            <button type="button" class="btn btn-primary mt-2 addIngrInst" data-toggle="modal" data-target="#addModalCenter">
+              +Add ingredient
+            </button>
+          </div>
+          <%
+            };
+          %>
         </ul>
       </div>
 
@@ -120,8 +131,19 @@
           </li>
           <%
             })
-          %>
 
+            //add ingredients if recipe is from DB
+            if (typeof dbRecipe!='undefined') { 
+          %>
+          <div>
+            <%# button trigger add modal %>
+            <button type="button" class="btn btn-primary mt-2 addIngrInst" data-toggle="modal" data-target="#addModalCenter">
+              +Add instruction
+            </button>
+          </div>
+          <%
+            }
+          %>
         </ul>
       </div>
 
@@ -180,6 +202,45 @@
 
     </div>
   </section>
+
+  <%# add ingredient/instruction modal %>
+  <div class="modal fade" id="addModalCenter" tabindex="-1" role="dialog" aria-labelledby="addModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <%# form collecting user inputs %>
+        <form action="/dbRecipes/addIngrInst" id="recipeForm" method='POST'>
+          <div class="modal-body">
+
+            <%# recipe id %>
+            <input type="hidden" class="form-control" aria-describedby="recipeDBId" name="recipeDBId" value="<%=dbRecipe['_id'] %>">
+
+            <%# recipe reference %>
+            <div class="mb-3 form-floating">
+              <input type="text" class="form-control" id="addTo" aria-describedby="addToHelp">
+              <label for="recipeReference" id="addToLabel"></label>
+            </div>
+
+          </div>
+
+          <%# submit recipe %>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+            <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+
+
+
 </main>
 
 <%- include('partials/footer') -%>

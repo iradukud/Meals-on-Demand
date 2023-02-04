@@ -14,6 +14,6 @@ router.delete("/delete/:id", dbRecipeController.deleteRecipe);
 //router.put("/edit", upload.single("recipeImage"), dbRecipeController.editRecipe)
 router.post("/lookup", dbRecipeController.getSearchRecipes);
 router.get("/pageLook/:number", dbRecipeController.nextLookPageRecipes)
-
+router.post("/addIngrInst", dbRecipeController.addIngrInst)
 
 module.exports = router;

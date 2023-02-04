@@ -86,7 +86,7 @@ module.exports = {
       console.log('Looking for specific recipe');
       //retrieves a recipe from the DB, specifically by ID
       const recipe = await Recipe.findById({ _id: req.params.id });
-      
+
       //render recipe page with user's selected recipe
       res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
     } catch (err) {
@@ -195,4 +195,31 @@ module.exports = {
       res.render("recipeLookup.ejs", { title: "Recipe Lookup" });
     }
   },
-}
+  addIngrInst: async (req, res) => {
+    //retrieve recipe by id
+    let recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+
+    try {
+      if (req.body.addIngredient) {
+        //add new ingredient
+        await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId }, { $push: { ingredients: req.body.addIngredient } });
+      } else if (req.body.addInstruction) {
+        //add new instruction
+        await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId }, { $push: { instructions: req.body.addInstruction } });
+      };
+
+      console.log(`Item has been added!`);
+      //retrieve new modified recipe
+      recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+      //redirect to recipe page with information message
+      req.flash("info", { msg: "Item has been added!" });
+      //rendered the recipe lookup page with filters applied
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    } catch (err) {
+      console.log(err);
+      req.flash("error", { msg: "Item could not be added" });
+      //render recipe lookup page
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    };
+  },
+};
