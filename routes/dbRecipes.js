@@ -13,7 +13,8 @@ router.delete("/delete/:id", dbRecipeController.deleteRecipe);
 //disabled for now
 //router.put("/edit", upload.single("recipeImage"), dbRecipeController.editRecipe)
 router.post("/lookup", dbRecipeController.getSearchRecipes);
-router.get("/pageLook/:number", dbRecipeController.nextLookPageRecipes)
-router.post("/addIngrInst", dbRecipeController.addIngrInst)
+router.get("/pageLook/:number", dbRecipeController.nextLookPageRecipes);
+router.post("/addIngrInst", dbRecipeController.addIngrInst);
+router.put("/editIngrInst", dbRecipeController.editIngrInst);
 
 module.exports = router;

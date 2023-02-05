@@ -195,6 +195,8 @@ module.exports = {
       res.render("recipeLookup.ejs", { title: "Recipe Lookup" });
     }
   },
+
+  //add new ingredient or instruction 
   addIngrInst: async (req, res) => {
     //retrieve recipe by id
     let recipe = await Recipe.findById({ _id: req.body.recipeDBId });
@@ -218,6 +220,40 @@ module.exports = {
     } catch (err) {
       console.log(err);
       req.flash("error", { msg: "Item could not be added" });
+      //render recipe lookup page
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    };
+  },
+
+  //add new ingredient or instruction 
+  editIngrInst: async (req, res) => {
+    //retrieve recipe by id
+    let recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+
+    try {
+      if (req.body.editIngredient) {
+        //add new ingredient
+        await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId },
+          { $set: { 'ingredients.$[i]': req.body.editIngredient } },
+          { arrayFilters: [{ 'i': req.body.editedItem }] });
+      } else if (req.body.editInstruction) {
+        //add new instruction
+        await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId },
+          { $set: { 'instructions.$[i]': req.body.editInstruction } },
+          { arrayFilters: [{ 'i': req.body.editedItem }] }
+        );
+      };
+
+      console.log(`Item has been added!`);
+      //retrieve new modified recipe
+      recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+      //redirect to recipe page with information message
+      req.flash("info", { msg: "Item has been edited!" });
+      //rendered the recipe lookup page with filters applied
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    } catch (err) {
+      console.log(err);
+      req.flash("error", { msg: "Item could not be edited" });
       //render recipe lookup page
       res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
     };

@@ -36,7 +36,7 @@ module.exports = {
       //fetches a recipe from the EDAMAM api, specifically by ID
       const response = await fetch(`https://api.edamam.com/api/recipes/v2/${req.params.id}?type=public&app_id=${process.env.FOOD_ID}&app_key=${process.env.FOOD_KEY}`);
       const recipe = await response.json();
-      
+
       //render recipe page
       res.render("recipe.ejs", { title: "Recipe Lookup", apiRecipe: recipe });
     } catch (err) {
@@ -48,14 +48,14 @@ module.exports = {
   saveRecipe: async (req, res) => {
     try {
       console.log(req.body.recipeIngredients)
-      
+
       //uploading/creating recipe on DB
       await Recipe.create({
         name: req.body.recipeName,
         image: req.body.recipeImage,
         cloudinaryId: '',
         type: req.body.recipeMealtype.split('/'),
-        ingredients: req.body.recipeIngredients.split(','),
+        ingredients: req.body.recipeIngredients.split(',').map(ingredient => ingredient.trim()),
         instructions: [],
         reference: req.body.recipeReference,
         user: req.user.id,

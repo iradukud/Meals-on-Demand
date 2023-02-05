@@ -96,8 +96,10 @@
           <% 
             ingredients.forEach(ingredient => {
           %>
-          <li class="border-bottom editIngredient">
-            <%= ingredient %>
+
+          <li class="border-bottom">
+            <button type="button" class="btn fas fa-edit editIngrInst" data-toggle="modal" data-target="#editModalCenter"></button>
+            <%=ingredient%>
           </li>
           <%
             });
@@ -127,6 +129,7 @@
             instructions.forEach(instruction => {
           %>
           <li class="border-bottom editInstruction">
+            <button type="button" class="btn fas fa-edit editIngrInst" data-toggle="modal" data-target="#editModalCenter"></button>
             <%= instruction %>
           </li>
           <%
@@ -214,17 +217,55 @@
           </button>
         </div>
 
-        <%# form collecting user inputs %>
+        <%# form that takes added inputs %>
         <form action="/dbRecipes/addIngrInst" id="recipeForm" method='POST'>
           <div class="modal-body">
 
             <%# recipe id %>
             <input type="hidden" class="form-control" aria-describedby="recipeDBId" name="recipeDBId" value="<%=dbRecipe['_id'] %>">
 
-            <%# recipe reference %>
+            <%# added item %>
             <div class="mb-3 form-floating">
               <input type="text" class="form-control" id="addTo" aria-describedby="addToHelp">
-              <label for="recipeReference" id="addToLabel"></label>
+              <label for="addTo" id="addToLabel"></label>
+            </div>
+
+          </div>
+
+          <%# submit addition %>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+            <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+
+  <%# edit ingredient/instruction modal %>
+  <div class="modal fade" id="editModalCenter" tabindex="-1" role="dialog" aria-labelledby="editModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <%# form that takes edited inputs %>
+        <form action="/dbRecipes/editIngrInst?_method=PUT" id="recipeForm" method='POST'>
+          <div class="modal-body">
+
+            <%# recipe id %>
+            <input type="hidden" class="form-control" name="recipeDBId" value="<%=dbRecipe['_id'] %>">
+            <%# edited item %>
+            <input type="hidden" class="form-control" name="editedItem" id="editIngrInst">
+
+            <%# new edit item %>
+            <div class="mb-3 form-floating">
+              <input type="text" class="form-control" id="edit" aria-describedby="editHelp">
+              <label for="edit" id="editLabel"></label>
             </div>
 
           </div>
@@ -238,8 +279,6 @@
       </form>
     </div>
   </div>
-
-
 
 </main>
 

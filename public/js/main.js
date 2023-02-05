@@ -10,8 +10,10 @@ $('.close').click(function () {
     $('#recipeModal').modal('hide');
     //hide account modal
     $('#accountModal').modal('hide');
-    //
+    //close addModal
     $('#addModalCenter').modal('hide');
+    //close editModal
+    $('#editModalCenter').modal('hide');
 });
 
 /*
@@ -142,6 +144,35 @@ $('.addIngrInst').click(function () {
         document.querySelector('#addTo').setAttribute('name', 'addInstruction');
         document.querySelector('#addTo').setAttribute('placeholder', 'Add Instruction');
         document.querySelector('#addToLabel').innerText = 'Add Instruction';
+    };
+});
+
+//trigger event for edit ingredient/instruction
+$('.editIngrInst').click(function () {
+    $('#editModalCenter').modal('show');
+
+    //extract information of when the item is being added
+    const edit = this.parentNode.parentNode.parentNode.childNodes[1].innerText.toLowerCase();
+    //saved the original value of edited item
+    document.querySelector('#editIngrInst').setAttribute('value', this.parentNode.innerText.trim());
+
+    //set popup label 
+    if (edit == 'ingredients') {
+        //set to add ingredient 
+        document.querySelector('#editModalTitle').innerText = 'Edit Ingredient';
+        //setup form for submission
+        document.querySelector('#edit').setAttribute('name', 'editIngredient');
+        document.querySelector('#edit').setAttribute('placeholder', 'Edit Ingredient');
+        document.querySelector('#edit').setAttribute('value', this.parentNode.innerText.trim());
+        document.querySelector('#editLabel').innerText = 'Edit Ingredient';        
+    } else {
+        //set to add instruction 
+        document.querySelector('#editModalTitle').innerText = `Edit Instruction`;
+        //setup form for submission
+        document.querySelector('#edit').setAttribute('name', 'editInstruction');
+        document.querySelector('#edit').setAttribute('placeholder', 'Edit Instruction');
+        document.querySelector('#edit').setAttribute('value', this.parentNode.innerText.trim());
+        document.querySelector('#editLabel').innerText = 'Edit Instruction';
     };
 });
 
