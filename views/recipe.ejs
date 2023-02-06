@@ -97,9 +97,31 @@
             ingredients.forEach(ingredient => {
           %>
 
-          <li class="border-bottom">
-            <button type="button" class="btn fas fa-edit editIngrInst" data-toggle="modal" data-target="#editModalCenter"></button>
-            <%=ingredient%>
+          <li class="border-bottom row">
+
+            <%# add item button %>
+            <div class="col-sm">
+              <button type="button" class="btn fas fa-edit editIngrInst" data-toggle="modal" data-target="#editModalCenter"></button>
+            </div>
+
+            <%# ingredient from DB %>
+            <div class="col-sm">
+              <%=ingredient%>
+            </div>
+
+            <%# delete item button %>
+            <div class="col-sm">
+              <form action="/dbRecipes/deleteIngrInst/<%= dbRecipe['_id'] %>?_method=DELETE" method="POST">
+
+                <%# deleted item %>
+                <input type="hidden" class="form-control" name="deleteIngredient" value="<%=ingredient%>">
+
+                <%# submit deletion of item %>
+                <button class="btn fa fa-trash"></button>
+
+              </form>
+            </div>
+
           </li>
           <%
             });
@@ -128,9 +150,31 @@
           <% 
             instructions.forEach(instruction => {
           %>
-          <li class="border-bottom editInstruction">
-            <button type="button" class="btn fas fa-edit editIngrInst" data-toggle="modal" data-target="#editModalCenter"></button>
-            <%= instruction %>
+          <li class="border-bottom editInstruction row">
+
+            <%# add item button %>
+            <div class="col-sm">
+              <button type="button" class="btn fas fa-edit editIngrInst" data-toggle="modal" data-target="#editModalCenter"></button>
+            </div>
+
+            <%# instruction from DB %>
+            <div class="col-sm">
+              <%=instruction%>
+            </div>
+
+            <%# delete item button %>
+            <div class="col-sm">
+              <form action="/dbRecipes/deleteIngrInst/<%= dbRecipe['_id'] %>?_method=DELETE" method="POST">
+
+                <%# deleted item %>
+                <input type="hidden" class="form-control" name="deleteInstruction" value="<%=instruction%>">
+
+                <%# submit deletion of item %>
+                <button class="btn fa fa-trash"></button>
+
+              </form>
+            </div>
+
           </li>
           <%
             })

@@ -152,9 +152,10 @@ $('.editIngrInst').click(function () {
     $('#editModalCenter').modal('show');
 
     //extract information of when the item is being added
-    const edit = this.parentNode.parentNode.parentNode.childNodes[1].innerText.toLowerCase();
+    const edit = this.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerText.toLowerCase();
+    
     //saved the original value of edited item
-    document.querySelector('#editIngrInst').setAttribute('value', this.parentNode.innerText.trim());
+    document.querySelector('#editIngrInst').setAttribute('value', this.parentNode.parentNode.childNodes[3].innerText.trim());
 
     //set popup label 
     if (edit == 'ingredients') {
@@ -163,7 +164,7 @@ $('.editIngrInst').click(function () {
         //setup form for submission
         document.querySelector('#edit').setAttribute('name', 'editIngredient');
         document.querySelector('#edit').setAttribute('placeholder', 'Edit Ingredient');
-        document.querySelector('#edit').setAttribute('value', this.parentNode.innerText.trim());
+        document.querySelector('#edit').setAttribute('value', this.parentNode.parentNode.childNodes[3].innerText.trim());
         document.querySelector('#editLabel').innerText = 'Edit Ingredient';        
     } else {
         //set to add instruction 
@@ -171,7 +172,7 @@ $('.editIngrInst').click(function () {
         //setup form for submission
         document.querySelector('#edit').setAttribute('name', 'editInstruction');
         document.querySelector('#edit').setAttribute('placeholder', 'Edit Instruction');
-        document.querySelector('#edit').setAttribute('value', this.parentNode.innerText.trim());
+        document.querySelector('#edit').setAttribute('value', this.parentNode.parentNode.childNodes[3].innerText.trim());
         document.querySelector('#editLabel').innerText = 'Edit Instruction';
     };
 });

@@ -232,16 +232,15 @@ module.exports = {
 
     try {
       if (req.body.editIngredient) {
-        //add new ingredient
+        //edit ingredient
         await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId },
           { $set: { 'ingredients.$[i]': req.body.editIngredient } },
           { arrayFilters: [{ 'i': req.body.editedItem }] });
       } else if (req.body.editInstruction) {
-        //add new instruction
+        //edit instruction
         await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId },
           { $set: { 'instructions.$[i]': req.body.editInstruction } },
-          { arrayFilters: [{ 'i': req.body.editedItem }] }
-        );
+          { arrayFilters: [{ 'i': req.body.editedItem }] });
       };
 
       console.log(`Item has been added!`);
@@ -254,6 +253,39 @@ module.exports = {
     } catch (err) {
       console.log(err);
       req.flash("error", { msg: "Item could not be edited" });
+      //render recipe lookup page
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    };
+  },
+
+  //delete new ingredient or instruction
+  deleteIngrInst: async (req, res) => {
+    //retrieve recipe by id
+    let recipe = await Recipe.findById({ _id: req.params.id });
+
+    try {
+      if (req.body.deleteIngredient) {
+        //delete ingredient
+        await Recipe.findOneAndUpdate({ _id: req.params.id },
+          { $pull: { ingredients: req.body.deleteIngredient } },
+          { multi: false });
+      } else if (req.body.deleteInstruction) {
+        //delete instruction
+        await Recipe.findOneAndUpdate({ _id: req.params.id },
+          { $pull: { instructions: req.body.deleteInstruction } },
+          { multi: false });
+      };
+
+      console.log(`Item has been added!`);
+      //retrieve new modified recipe
+      recipe = await Recipe.findById({ _id: req.params.id });
+      //redirect to recipe page with information message
+      req.flash("info", { msg: "Item has been deleted!" });
+      //rendered the recipe lookup page with filters applied
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    } catch (err) {
+      console.log(err);
+      req.flash("error", { msg: "Item could not be deleted" });
       //render recipe lookup page
       res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
     };

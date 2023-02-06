@@ -16,5 +16,7 @@ router.post("/lookup", dbRecipeController.getSearchRecipes);
 router.get("/pageLook/:number", dbRecipeController.nextLookPageRecipes);
 router.post("/addIngrInst", dbRecipeController.addIngrInst);
 router.put("/editIngrInst", dbRecipeController.editIngrInst);
+router.delete("/deleteIngrInst/:id", dbRecipeController.deleteIngrInst);
+
 
 module.exports = router;
