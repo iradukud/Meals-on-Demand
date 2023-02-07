@@ -121,46 +121,6 @@ module.exports = {
     }
   },
 
-  /* disabled for now
-  //edit recipe from recipe from DB
-  editRecipe: async (req, res) => {
-    try {
-
-      //find the recipe by id
-      let recipe = await Recipe.findById({ _id: req.body.recipeId });
-
-      //delete recipe's image from cloudinary
-      if (recipe.cloudinaryId) {
-        await cloudinary.uploader.destroy(recipe.cloudinaryId);
-      }
-
-      //delete recipe from db
-      await Recipe.remove({ _id: req.body.recipeId })
-
-      // Upload image to cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path)
-
-      //Create new DB recipe
-      await Recipe.create({
-        name: (req.body.recipeName).split(' ').map(x => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase()).join(' '),
-        image: result.secure_url,
-        cloudinaryId: result.public_id,
-        type: [req.body.breakfast, req.body.brunch, req.body.lunch, req.body.dinner, req.body.snack, req.body.teatime].filter(x => x != undefined),
-        ingredients: req.body.recipeIngredients.split(".").map(x => x.trim()).filter(x => x != ''),
-        instructions: req.body.recipeInstructions.split(".").map(x => x.trim()).filter(x => x != '') || [],
-        reference: req.body.recipeReference,
-        user: req.user.id,
-      })
-
-      console.log("Edited Recipe");
-      res.redirect("/Dashboard");
-    } catch (err) {
-      console.log(err);
-      res.redirect("/Dashboard");
-    }
-  },
-  */
-
   //get searched recipes from DB
   getSearchRecipes: async (req, res) => {
     try {
@@ -225,7 +185,40 @@ module.exports = {
     };
   },
 
-  //add new ingredient or instruction 
+  //edit ingredient or instruction 
+  editNamRef: async (req, res) => {
+    //retrieve recipe by id
+    let recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+
+    try {
+      if (req.body.editedReference) {
+        console.log(req.body.editedReference)
+        //edit reference
+        await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId },
+          { $set: { 'reference': req.body.editedReference } });
+      } else if (req.body.editedName) {
+        console.log(req.body.editedName)
+        //edit name
+        await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId },
+          { $set: { 'name': req.body.editedName } });
+      }
+
+      console.log(`Item has been edited!`);
+      //retrieve new modified recipe
+      recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+      //redirect to recipe page with information message
+      req.flash("info", { msg: "Item has been edited!" });
+      //rendered the recipe lookup page with filters applied
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    } catch (err) {
+      console.log(err);
+      req.flash("error", { msg: "Item could not be edited" });
+      //render recipe lookup page
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    };
+  },
+
+  //edit ingredient or instruction 
   editIngrInst: async (req, res) => {
     //retrieve recipe by id
     let recipe = await Recipe.findById({ _id: req.body.recipeDBId });

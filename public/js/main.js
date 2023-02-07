@@ -14,36 +14,9 @@ $('.close').click(function () {
     $('#addModalCenter').modal('hide');
     //close editModal
     $('#editModalCenter').modal('hide');
+    //close editName modal
+    $('#editNamRefModalCenter').modal('hide');
 });
-
-/*
-temporarily disabled as better edit implementation are being worked on
-//trigger & event for edit recippe click
-$('#editRecipe').click(function () {
-    //show recipe modal
-    $('#recipeModal').modal('show');
-
-    //changed the form's action to allow for it to send request to right route
-    document.querySelector('#recipeForm').action = '/dbRecipes/edit?_method=PUT'
-    //take information on screen and place it into the form
-    document.querySelector('#recipeModalLabel').innerText = 'Edit Recipe'
-    document.querySelector('#recipeName').value = document.querySelector('#editName').innerText
-    document.querySelector('#recipeIngredients').value = Object.values(document.querySelectorAll('.editIngredient')).map(x => x.innerText).join('. ')
-    document.querySelector('#recipeInstructions').value = Object.values(document.querySelectorAll('.editInstruction')).map(x => x.innerText).join('. ')
-    document.querySelector('#recipeReference').value = document.querySelector('#editreference').getAttribute("href")
-    document.querySelectorAll('.types').forEach(type => {
-        document.getElementById(type.innerText).checked = true
-    })
-
-    //inserted hidden input for recipe's id
-    const id = document.createElement("input")
-    id.setAttribute('type', 'hidden')
-    id.setAttribute('name', 'recipeId')
-    id.setAttribute('value', document.querySelector('#recipeId').innerText)
-    document.querySelector('.modal-body').appendChild(id)
-})
-*/
-
 
 //trigger event for edit account (password, email and username) click
 $('.accountEdit').click(function () {
@@ -120,13 +93,32 @@ $('#lookDb').click(function () {
     document.querySelector('#searchForm').action = '/dbRecipes/lookup';
 });
 
+//trigger event edit recipe name or recipe reference
+$('.editNamRef').click(function () {
+    //show edit recipe name/reference modal
+    $('#editNamRefModalCenter').modal('show');
+
+    if (this.parentNode.innerText == 'Reference Site/Video ') {
+        //setup modal to submit reference change
+        document.querySelector('#editNamRefModalTitle').innerText = 'Edit Reference';
+        document.querySelector('#editedItem').setAttribute('name', 'editedReference');
+        document.querySelector('#editedItem').setAttribute('value', this.parentNode.childNodes[1].getAttribute('href'));
+        document.querySelector('#editedItemLabel').innerText = 'Recipe Reference';
+    } else {
+        //setup modal to submit name change
+        document.querySelector('#editNamRefModalTitle').innerText = 'Edit Name';
+        document.querySelector('#editedItem').setAttribute('name', 'editedName');
+        document.querySelector('#editedItem').setAttribute('value', this.parentNode.innerText);
+        document.querySelector('#editedItemLabel').innerText = 'Recipe Name';
+    }
+});
+
 //trigger event for add ingredient/instruction
 $('.addIngrInst').click(function () {
     $('#addModalCenter').modal('show');
 
     //extract information of when the item is being added
     const addTo = this.innerText.split(' ')[1];
-    console.log(addTo);
 
     //set popup label 
     if (addTo == 'ingredient') {
@@ -136,7 +128,7 @@ $('.addIngrInst').click(function () {
         document.querySelector('#addTo').setAttribute('name', 'addIngredient');
         document.querySelector('#addTo').setAttribute('placeholder', 'Add Ingredient');
         document.querySelector('#addToLabel').innerText = 'Add Ingredient';
-        
+
     } else {
         //set to add instruction 
         document.querySelector('#addModalTitle').innerText = `Add Instruction`;
@@ -153,7 +145,7 @@ $('.editIngrInst').click(function () {
 
     //extract information of when the item is being added
     const edit = this.parentNode.parentNode.parentNode.parentNode.childNodes[1].innerText.toLowerCase();
-    
+
     //saved the original value of edited item
     document.querySelector('#editIngrInst').setAttribute('value', this.parentNode.parentNode.childNodes[3].innerText.trim());
 
@@ -165,7 +157,7 @@ $('.editIngrInst').click(function () {
         document.querySelector('#edit').setAttribute('name', 'editIngredient');
         document.querySelector('#edit').setAttribute('placeholder', 'Edit Ingredient');
         document.querySelector('#edit').setAttribute('value', this.parentNode.parentNode.childNodes[3].innerText.trim());
-        document.querySelector('#editLabel').innerText = 'Edit Ingredient';        
+        document.querySelector('#editLabel').innerText = 'Edit Ingredient';
     } else {
         //set to add instruction 
         document.querySelector('#editModalTitle').innerText = `Edit Instruction`;
@@ -177,12 +169,4 @@ $('.editIngrInst').click(function () {
     };
 });
 
-//edit ingredients
-//delete ingredients
-
-//edit instructions
-//delete instructions
-
-//edit name
-//edit reference
 //edit image

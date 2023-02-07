@@ -57,7 +57,7 @@
   %>
 
   <%# recipe name %>
-  <h1 class="display-5 fw-bold lh-1 mb-3 text-center" id="editName"><%= name %></h1>
+  <h1 class="display-5 fw-bold lh-1 mb-3 text-center"><%= name %><button class="btn fas fa-edit editNamRef"></button></h1>
 
   <section class="row justify-content-center mt-3 px-5">
     <%# container recipe %>
@@ -198,9 +198,10 @@
       <div class="card-body">
         <h4>Recipe Reference</h4>
         <%# link to original recipe %>
-        <a href="<%= reference %>" target="_blank" id="editreference">
-          <h6>Reference Site/Video</h6>
-        </a>
+        <h6>
+          <a href="<%= reference %>" target="_blank" id="editreference">Reference Site/Video</a>
+          <button class="btn fas fa-edit editNamRef">
+        </h6>
       </div>
 
       <%# features related to DB API results %>
@@ -250,6 +251,43 @@
     </div>
   </section>
 
+  <%# edit recipe name/reference modal %>
+  <div class="modal fade" id="editNamRefModalCenter" tabindex="-1" role="dialog" aria-labelledby="editNamRefModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <%# modal title %>
+          <h5 class="modal-title" id="editNamRefModalTitle"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <%# form that takes edited inputs %>
+        <form action="/dbRecipes/editNamRef?_method=PUT" id="recipeForm" method='POST'>
+          <div class="modal-body">
+
+            <%# recipe id %>
+            <input type="hidden" class="form-control" name="recipeDBId" value="<%=dbRecipe['_id']%>">
+
+            <%# new recipe name/reference %>
+            <div class="mb-3 form-floating">
+              <input type="text" class="form-control" id="editedItem" aria-describedby="editedItemHelp">
+              <label for="editedItem" id="editedItemLabel"></label>
+            </div>
+
+          </div>
+
+          <%# submit recipe name %>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+            <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+
   <%# add ingredient/instruction modal %>
   <div class="modal fade" id="addModalCenter" tabindex="-1" role="dialog" aria-labelledby="addModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -291,7 +329,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalTitle">Modal title</h5>
+          <h5 class="modal-title" id="editModalTitle"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
