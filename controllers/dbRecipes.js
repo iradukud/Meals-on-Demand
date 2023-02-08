@@ -218,6 +218,71 @@ module.exports = {
     };
   },
 
+  //change recipe imagef
+  changeImage: async (req, res) => {
+    //retrieve recipe by id
+    let recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+
+    try {
+      //delete recipe's image from cloudinary
+      await cloudinary.uploader.destroy(recipe.cloudinaryId);
+
+      //upload image to cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path)
+
+      //assign image it to DB recipe
+      await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId },
+        {
+          $set: {
+            image: result.secure_url,
+            cloudinaryId: result.public_id
+          }
+        });
+
+      console.log(`Image has been changed!`);
+      //retrieve new modified recipe
+      recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+      //redirect to recipe page with information message
+      req.flash("info", { msg: "Image has been changed!" });
+      //rendered the recipe lookup page with filters applied
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    } catch (err) {
+      console.log(err);
+      req.flash("error", { msg: "Image could not be changed" });
+      //render recipe lookup page
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    };
+  },
+
+  //change recipe imagef
+  editType: async (req, res) => {
+    //retrieve recipe by id
+    let recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+
+    try {
+      //assign image it to DB recipe
+      await Recipe.findOneAndUpdate({ _id: req.body.recipeDBId },
+        {
+          $set: {
+            type: [req.body.breakfast, req.body.brunch, req.body.lunch, req.body.dinner, req.body.snack, req.body.teatime].filter(x => x != undefined)
+          }
+        });
+
+      console.log(`Recipe type(s) has been changed!`);
+      //retrieve new modified recipe
+      recipe = await Recipe.findById({ _id: req.body.recipeDBId });
+      //redirect to recipe page with information message
+      req.flash("info", { msg: "Recipe type(s) has been changed!" });
+      //rendered the recipe lookup page with filters applied
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    } catch (err) {
+      console.log(err);
+      req.flash("error", { msg: "Image could not be changed" });
+      //render recipe lookup page
+      res.render("recipe.ejs", { title: "Recipe Lookup", dbRecipe: recipe });
+    };
+  },
+
   //edit ingredient or instruction 
   editIngrInst: async (req, res) => {
     //retrieve recipe by id

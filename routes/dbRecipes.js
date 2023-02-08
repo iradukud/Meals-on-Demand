@@ -16,5 +16,8 @@ router.post("/addIngrInst", dbRecipeController.addIngrInst);
 router.put("/editIngrInst", dbRecipeController.editIngrInst);
 router.delete("/deleteIngrInst/:id", dbRecipeController.deleteIngrInst);
 router.put("/editNamRef", dbRecipeController.editNamRef);
+router.put("/changeImage",upload.single("recipeImage"), dbRecipeController.changeImage);
+router.put("/editType", dbRecipeController.editType);
+
 
 module.exports = router;

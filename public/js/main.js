@@ -4,7 +4,7 @@ $('#addRecipe').click(function () {
     $('#recipeModal').modal('show');
 });
 
-//trigger & event for closing popup
+//trigger event for closing modals
 $('.close').click(function () {
     //hide recipe modal
     $('#recipeModal').modal('hide');
@@ -16,6 +16,10 @@ $('.close').click(function () {
     $('#editModalCenter').modal('hide');
     //close editName modal
     $('#editNamRefModalCenter').modal('hide');
+    //close upload image modal
+    $('#uploadImageModalCenter').modal('hide');
+    //close edit type modal
+    $('#editTypeModalCenter').modal('hide');
 });
 
 //trigger event for edit account (password, email and username) click
@@ -113,9 +117,29 @@ $('.editNamRef').click(function () {
     }
 });
 
+//trigger event for change recipe image
+$('#addRecipe').click(function () {
+    //show recipe modal
+    $('#recipeModal').modal('show');
+});
+
+//trigger event for edit recipe type 
+$('.editType').click(function () {
+    //show recipe modal
+    $('#editTypeModalCenter').modal('show');
+
+    document.querySelectorAll('.types').forEach(type => {
+        document.getElementById('edit'+type.innerText).checked = true
+    })
+
+
+
+
+});
+
 //trigger event for add ingredient/instruction
-$('.addIngrInst').click(function () {
-    $('#addModalCenter').modal('show');
+$('.fa-upload').click(function () {
+    $('#uploadImageModalCenter').modal('show');
 
     //extract information of when the item is being added
     const addTo = this.innerText.split(' ')[1];
