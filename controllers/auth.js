@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const Recipe = require("../models/Recipe");
 const cloudinary = require("../middleware/cloudinary");
 
-// login verification
+//login verification
 exports.postLogin = (req, res, next) => {
   //variable that holds an array of error messages
   const validationErrors = [];
@@ -18,7 +18,7 @@ exports.postLogin = (req, res, next) => {
     validationErrors.push({ msg: "Password cannot be blank." });
   };
 
-  //If the validationErrors array has any messages redirect to login page with error presented to the user   
+  //if the validationErrors array has any messages redirect to login page with error presented to the user   
   if (validationErrors.length) {
     console.log('At least one input field is empty');
     req.flash("errors", validationErrors);

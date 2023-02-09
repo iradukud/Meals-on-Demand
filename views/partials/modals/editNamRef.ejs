@@ -1,0 +1,38 @@
+<%# edit recipe name/reference modal %>
+<div class="modal fade" id="editNamRefModal" tabindex="-1" role="dialog" aria-labelledby="editNamRefModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title" id="editNamRefModalTitle"></h5>
+        <%# close modal %>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+
+        <%# form that takes edited inputs %>
+        <form action="/dbRecipes/editNamRef?_method=PUT" id="recipeForm" method='POST'>
+          <div class="modal-body">
+
+            <%# recipe id %>
+            <input type="hidden" class="form-control" name="recipeDBId" value="<%=dbRecipe['_id']%>">
+
+            <%# new recipe name/reference %>
+            <div class="mb-3 form-floating">
+              <input type="text" class="form-control" id="editedItem" aria-describedby="editedItemHelp">
+              <label for="editedItem" id="editedItemLabel"></label>
+            </div>
+
+          </div>
+          <%# submit name/reference changes %>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+            <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>

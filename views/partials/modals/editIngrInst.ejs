@@ -1,0 +1,40 @@
+ <%# edit ingredient/instruction modal %>
+ <div class="modal fade" id="editIngrInstModal" tabindex="-1" role="dialog" aria-labelledby="editIngrInstModalTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <%# modal title %>
+         <h5 class="modal-title" id="editIngrInstModalTitle"></h5>
+         <%# close modal %>
+         <button type="button" class="close" data-dismiss="modal" aria-label="close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+
+       <%# form that takes edited inputs %>
+       <form action="/dbRecipes/editIngrInst?_method=PUT" id="recipeForm" method='POST'>
+         <div class="modal-body">
+
+           <%# recipe id %>
+           <input type="hidden" class="form-control" name="recipeDBId" value="<%=dbRecipe['_id'] %>">
+           <%# edited item %>
+           <input type="hidden" class="form-control" name="editedItem" id="editIngrInst">
+
+           <%# new item %>
+           <div class="mb-3 form-floating">
+             <input type="text" class="form-control" id="edit" aria-label="new ingredient or instruction">
+             <label for="editIngrInst" id="editLabel"></label>
+           </div>
+
+         </div>
+         <%# submit edit %>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+           <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
+         </div>
+
+       </form>
+
+     </div>
+   </div>
+ </div>

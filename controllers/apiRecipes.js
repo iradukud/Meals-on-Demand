@@ -19,18 +19,20 @@ module.exports = {
       const response = await fetch(url);
       const recipes = await response.json();
 
-      //extract the link to the next page from the data,, whilst hiding api keys
+      //extract the link to the next page from the data, whilst hiding api keys
       nextPage = recipes['_links']['next']['href'].split('_').filter(x => x.includes('cont='))[0].split('&')[0];
 
       console.log('Recipes fetched from API');
+
       //render recipe lookup page with additionally data (searched item, next recipes)
       res.render("recipeLookup.ejs", { title: "Recipe Lookup", apiRecipes: recipes['hits'], searched: req.body.searchItem, nextRecipes: nextPage });
+
     } catch (err) {
       console.log(err);
     };
   },
 
-  //get individual recipe from the API
+  //get recipe from the API
   getRecipe: async (req, res) => {
     try {
       //fetches a recipe from the EDAMAM api, specifically by ID
@@ -38,35 +40,36 @@ module.exports = {
       const recipe = await response.json();
 
       //render recipe page
-      res.render("recipe.ejs", { title: "Recipe Lookup", apiRecipe: recipe });
+      res.render("apiRecipe.ejs", { title: "Recipe Lookup", apiRecipe: recipe });
+
     } catch (err) {
       console.log(err);
-    }
+    };
   },
 
   //save the recipe details to DB 
   saveRecipe: async (req, res) => {
     try {
-      console.log(req.body.recipeIngredients)
-
       //uploading/creating recipe on DB
       await Recipe.create({
-        name: req.body.recipeName,
+        name: req.body.recipeName.trim(),
         image: req.body.recipeImage,
         cloudinaryId: '',
         type: req.body.recipeMealtype.split('/'),
         ingredients: req.body.recipeIngredients.split(',').map(ingredient => ingredient.trim()),
         instructions: [],
-        reference: req.body.recipeReference,
+        reference: req.body.recipeReference.trim(),
         user: req.user.id,
       })
+
       console.log("recipe has been added!");
+
       //redirect to dashboard with information message
       req.flash("info", { msg: "Recipe was saved" });
       res.redirect("/dashboard");
 
     } catch (err) {
       console.log(err);
-    }
-  }
-}
+    };
+  },
+};

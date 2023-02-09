@@ -1,0 +1,86 @@
+<%# load header partial %>
+<%- include('partials/header') -%>
+<%# load nav partial %>
+<%- include('partials/nav') -%>
+
+<main class="w-100 m-auto text-center ">
+
+  <%# page image %>
+  <img class="mb-2 mt-2" src="/imgs/pageImage.png" alt="bookImage" width="100">
+
+  <%# recipe name %>
+  <h1 class="display-5 fw-bold lh-1 mb-3 text-center" id="editRecipeName"><%=apiRecipe['recipe']['label']%></h1>
+
+  <section class="row justify-content-center mt-3 px-5">
+    <%# container recipe %>
+    <div class="card shadow-sm col-6 ">
+
+      <%# recipe image %>
+      <div>
+        <img src="<%=apiRecipe['recipe']['image']%>" class="mt-3" width="50%" height="300"></img>
+      </div>
+
+      <%# recipe category %>
+      <div class="d-flex justify-content-center mt-3">
+        <h6 class="btn-primary btn-lg px-4 me-md-2 types"><%=apiRecipe['recipe']['mealType']%></h6>
+      </div>
+
+      <%# recipe ingredients %>
+      <div class="card-body">
+        <h4>Ingredients</h4>
+        <ul class="px-0">
+
+          <%
+            //loop through ingredients
+            apiRecipe['recipe']['ingredientLines'].forEach(ingredient => {
+          %>
+
+          <%# each ingredient %>          
+          <li class="border-bottom row">
+            <div class="col-sm">
+              <%=ingredient%>
+            </div>
+          </li>
+          
+          <%
+            });
+          %>
+
+        </ul>
+      </div>
+
+      <%# recipe instructions %>
+      <div class="card-body">
+        <h4>Instructions</h4>
+      </div>
+
+      <%# recipe reference %>
+      <div class="card-body">
+        <h4>Recipe Reference</h4>
+        <%# link to original recipe %>
+        <h6>
+          <a href="<%=apiRecipe['recipe']['url']%>" target="_blank" id="editReference">Reference Site/Video</a>
+        </h6>
+      </div>
+
+      <div class="d-flex justify-content-around align-items-center px-4 mb-3 mt-5">
+        <%# back button %>
+        <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">Back</button>
+
+        <%# save button %>
+        <form action="/apiRecipes/save" method="POST">
+          <input type="hidden" name="recipeName" value="<%=apiRecipe['recipe']['label']%>">
+          <input type="hidden" name="recipeImage" value="<%=apiRecipe['recipe']['image']%>">
+          <input type="hidden" name="recipeMealtype" value="<%=apiRecipe['recipe']['mealType']%>">
+          <input type="hidden" name="recipeIngredients" value="<%=apiRecipe['recipe']['ingredientLines']%>">
+          <input type="hidden" name="recipeReference" value="<%=apiRecipe['recipe']['url']%>">
+          <button class="btn btn-primary btn-lg" type="submit">Save</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<%# load footer partial %>
+<%- include('partials/footer') -%>

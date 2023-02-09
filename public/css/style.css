@@ -1,4 +1,4 @@
-/* Login and Signp form */
+/* login and signup form */
 .form-loggings {
   max-width: 650px;
   padding: 15px;
@@ -20,18 +20,18 @@
   border-top-right-radius: 0;
 }
 
-/* Nav bar - ensures it's fixed */
+/* nav bar - ensures it's fixed */
 body {
   min-height: 75rem;
   padding-top: 4.5rem;
 }
 
-/* Removed bullets from list - recipe */
+/* removed bullets from list - recipe */
 ul {
   list-style-type: none;
 }
 
-/* Recipe popup*/
+/* modal popup*/
 .modal-sheet .modal-dialog {
   width: 380px;
   transition: bottom .75s ease-in-out;
@@ -54,4 +54,10 @@ legend {
   background-color: #0b5ed7;
   color: #fff;
   padding: 3px 6px;
+}
+
+/* removed link style on recipe text */
+.linkText {
+  color: black; 
+  text-decoration: none; 
 }

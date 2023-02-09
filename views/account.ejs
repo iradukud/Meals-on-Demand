@@ -1,4 +1,6 @@
+<%# load header partial %>
 <%- include('partials/header') -%>
+<%# load nav partial %>
 <%- include('partials/nav') -%>
 
 <main class="w-100 m-auto text-center">
@@ -14,6 +16,7 @@
         if (locals.messages.errors) { 
         messages.errors.forEach( el => { 
       %>
+      <%# each alert %>
       <div class="alert alert-danger"><%= el.msg %></div>
       <%
           })
@@ -22,6 +25,7 @@
         if (locals.messages.info) { 
           messages.info.forEach( el => { 
         %>
+      <%# each alert %>
       <div class="alert alert-info"><%= el.msg %></div>
       <%
           })
@@ -30,19 +34,19 @@
 
       <%# account information %>
       <%# username %>
-      <span>
+      <span class="Username <%= user['userName']%>">
         <button class="btn-primary fas fa-edit accountEdit"></button>
         <span class="fw-bold">Username</span>: <%= user['userName']%>
       </span><br>
 
       <%# email %>
-      <span>
+      <span class="Email <%= user['email']%>">
         <button class="btn-primary fas fa-edit accountEdit"></button>
         <span class="fw-bold">Email</span>: <%= user['email']%>
       </span><br>
 
       <%# password %>
-      <span>
+      <span class="Password xxxxxxx">
         <button class="btn-primary fas fa-edit accountEdit"></button>
         <span class="fw-bold">Password</span>: xxxxxxx
       </span><br>
@@ -52,50 +56,15 @@
         <button class="btn btn-secondary mt-3">Terminate account</button>
       </form>
     </div>
+
   </section>
-
-  <%# edit account modal %>
-  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog " role="document">
-      <%# form for edit inputs %>
-      <form id="accountForm" method="POST">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="accountModalLabel"></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-          <div class="modal-body">
-            <%# old password %>
-            <div class="mb-3 form-floating">
-              <input type="hidden" class="form-control password" name="oldPassword" placeholder="Password">
-              <label class="passwordLabel" for="oldPassword">Current Password</label>
-            </div>
-
-            <%# main input used to edit DB %>
-            <div class="mb-3 form-floating">
-              <input class="form-control" id="editItem" placeholder="">
-              <label id="editItemLabel"></label>
-            </div>
-
-            <%# secondary (password) input used to edit DB %>
-            <div class="mb-3 form-floating">
-              <input type="hidden" class="form-control password" name="confirmPassword" placeholder="Password">
-              <label class="passwordLabel" for="confirmPassword">Confirm Password</label>
-            </div>
-          </div>
-
-          <%# submission button %>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
-            <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
 </main>
 
+<%# load modal partials related to modifying user account %>
+<%- include('partials/modals/editAccount') -%>
+
+<%# load footer partial %>
 <%- include('partials/footer') -%>
+
+<%# load scripts related to the account only %>
+<script src="/js/auth.js"></script>

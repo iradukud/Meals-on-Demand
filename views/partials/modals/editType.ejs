@@ -1,0 +1,53 @@
+<%# edit recipe type modal %>
+<div class="modal fade" id="editTypeModal" tabindex="-1" role="dialog" aria-label="edit meal type" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title">Edit Type</h5>
+        <%# close modal %>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <%# form that takes edited inputs %>
+      <form action="/dbRecipes/editType?_method=PUT" method='POST'>
+        <div class="modal-body">
+
+          <%# recipe id %>
+          <input type="hidden" class="form-control" name="recipeDBId" value="<%=dbRecipe['_id']%>">
+
+          <%# new recipe type(s) %>
+          <fieldset>
+            <div class="d-flex justify-content-center">
+              <legend>Choose your recipe's type(s)</legend>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+              <input type="checkbox" id="editbreakfast" name="breakfast" value="breakfast">
+              <label for="breakfast">Breakfast</label>
+              <input type="checkbox" id="editbrunch" name="brunch" value="brunch">
+              <label for="brunch">Brunch</label>
+              <input type="checkbox" id="editlunch" name="lunch" value="lunch">
+              <label for="lunch">Lunch</label>
+              <input type="checkbox" id="editdinner" name="dinner" value="dinner">
+              <label for="dinner">Dinner</label>
+              <input type="checkbox" id="editsnack" name="snack" value="snack">
+              <label for="snack">Snack</label>
+              <input type="checkbox" id="editteatime" name="teatime" value="teatime">
+              <label for="teatime">Tea Time</label>
+            </div>
+          </fieldset>
+
+        </div>
+        <%# submit recipe new recipe type(s) %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+          <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

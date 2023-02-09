@@ -1,15 +1,15 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
   <div class="container-fluid">
-    <!-- links to user dashboard -->
+    <%# links to user dashboard %>
     <a class="navbar-brand" href="/">Meals on Demand</a>
 
-    <!-- Dropdown of menu items -->
+    <%# dropdown of nav items %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- nav items -->
+    <%# nav items %>
     <div class="collapse navbar-collapse" id="navbarCollapse">
 
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
@@ -24,46 +24,51 @@
         </li>
       </ul>
 
-      <!-- button trigger add recipe modal -->
+      <%# recipe modal trigger %>
       <div class="justify-content-lg-end">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#recipeModal" id="addRecipe">
           Create Recipe
         </button>
       </div>
 
-      <!-- logout button -->
+      <%# logout button %>
       <div class="d-lg-flex col-sm-1 justify-content-lg-end">
         <a href="/auth/logout" class="btn btn-primary">Logout</a>
       </div>
+
     </div>
   </div>
 </nav>
 
-<!-- recipe modal -->
+<%# recipe modal %>
 <div class="modal fade" id="recipeModal" tabindex="-1" role="dialog" aria-labelledby="recipeModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        <%# close title %>
         <h3 class="modal-title" id="recipeModalLabel">Create new recipe</h3>
-        <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal" aria-label="Close"></button>
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
 
-      <!-- form collecting user inputs -->
+      <%# form recipe information %>
       <form action="/dbRecipes/create" enctype="multipart/form-data" id="recipeForm" method='POST'>
         <div class="modal-body">
-          
-          <!-- recipe name -->
+
+          <%# recipe name, required %>
           <div class="mb-3 form-floating">
             <input type="text" class="form-control" id="recipeName" aria-describedby="recipeNameHelp" name="recipeName" placeholder="Recipe name" required>
             <label for="recipeName">Recipe name</label>
           </div>
 
-          <!-- recipe image -->
+          <%# recipe image %>
           <div class="mb-3">
             <input type="file" class="form-control" name="recipeImage" aria-describedby="recipeImageHelp">
           </div>
 
-          <!-- recipe type -->
+          <%# recipe type %>
           <fieldset>
             <div class="d-flex justify-content-center">
               <legend>Choose your recipe's type(s)</legend>
@@ -80,11 +85,11 @@
               <input type="checkbox" id="snack" name="snack" value="snack">
               <label for="snack">Snack</label>
               <input type="checkbox" id="teatime" name="teatime" value="teatime">
-              <label for="snack">Tea Time</label>
+              <label for="teatime">Tea Time</label>
             </div>
           </fieldset>
 
-          <!-- recipe ingredients -->
+          <%# recipe ingredients %>
           <div class="mb-3">
             <fieldset>
               <div class="d-flex justify-content-center">
@@ -96,7 +101,7 @@
             </fieldset>
           </div>
 
-          <!-- recipe instructions -->
+          <%# recipe instructions %>
           <div class="mb-3">
             <fieldset>
               <div class="d-flex justify-content-center">
@@ -108,14 +113,14 @@
             </fieldset>
           </div>
 
-          <!-- recipe reference -->
+          <%# recipe reference %>
           <div class="mb-3 form-floating">
             <input type="text" class="form-control" id="recipeReference" aria-describedby="recipeReferenceHelp" name="recipeReference" placeholder="Recipe reference">
             <label for="recipeReference">Recipe source</label>
           </div>
 
 
-          <!-- submit recipe -->
+          <%# submit new recipe %>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
             <button type="submit" class="btn btn-primary fas fa-chevron-circle-right" value="Upload"></button>
@@ -123,6 +128,7 @@
 
         </div>
       </form>
+    
     </div>
   </div>
 </div>

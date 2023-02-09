@@ -1,0 +1,38 @@
+<%# add ingredient/instruction modal %>
+<div class="modal fade" id="addIngrInstModal" tabindex="-1" role="dialog" aria-labelledby="addIngrInstModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title" id="addIngrInstModalTitle"></h5>
+        <%# close modal %>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <%# form that takes added inputs (ingredient/instruction) %>
+      <form action="/dbRecipes/addIngrInst" id="recipeForm" method='POST'>
+        <div class="modal-body">
+
+          <%# recipe id %>
+          <input type="hidden" class="form-control" aria-describedby="recipeDBId" name="recipeDBId" value="<%=dbRecipe['_id'] %>">
+
+          <%# added item %>
+          <div class="mb-3 form-floating">
+            <input type="text" class="form-control" id="addTo" aria-label="add new instruction or ingredient">
+            <label for="addTo" id="addToLabel"></label>
+          </div>
+
+        </div>
+        <%# submit new addition %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+          <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

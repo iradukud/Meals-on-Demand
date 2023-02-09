@@ -1,0 +1,37 @@
+<%# change image modal %>
+<div class="modal fade" id="changeImageModal" tabindex="-1" role="dialog" aria-label="change image" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title">Change Image</h5>
+        <%# close modal %>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <%# form that takes new image %>
+      <form action="/dbRecipes/changeImage?_method=PUT" enctype="multipart/form-data" id="changeForm" method='POST'>
+        <div class="modal-body">
+
+          <%# recipe id %>
+          <input type="hidden" class="form-control" name="recipeDBId" value="<%=dbRecipe['_id']%>">
+
+          <%# new recipe image %>
+          <div class="mb-3">
+            <input type="file" class="form-control" aria-label="change image input" name="recipeImage" required>
+          </div>
+
+        </div>
+        <%# submit new image %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+          <button type="submit" class="btn btn-primary fas fa-chevron-circle-right" value="Upload"></button>
+        </div>
+
+      </form>
+    
+    </div>
+  </div>
+</div>

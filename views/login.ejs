@@ -1,4 +1,6 @@
+<%# load header partial %>
 <%- include('partials/header') -%>
+
 
 <main class="form-loggings w-100 m-auto text-center position-absolute top-50 start-50 translate-middle">
   <div class="row justify-content-center">
@@ -9,6 +11,7 @@
         if (locals.messages.errors) { 
           messages.errors.forEach( el=> { 
       %>
+      <%# each alert %>
       <div class="alert alert-danger"><%= el.msg %></div>
       <% 
           }); 
@@ -33,20 +36,23 @@
           <label for="password">Password</label>
         </div>
 
-        <%# remember user checkbox %>
+        <%# remember user checkbox 
         <div class="checkbox mb-3">
           <label>
             <input type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
+        %>
 
         <%# submission links/buttons %>
         <button class="btn btn-primary btn-lg px-4 me-md-2" type="submit">Login</button>
         <h5 class="h5 mb-3 mt-3 fw-normal">Don't have an account?</h5>
         <a href="/signup" class="mb-3 btn btn-outline-secondary btn-lg px-4">Sign up</a>
       </form>
+
     </section>
   </div>
 </main>
 
+<%# load footer partial %>
 <%- include('partials/footer') -%>

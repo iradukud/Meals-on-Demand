@@ -1,3 +1,4 @@
+<%# load header partial %>
 <%- include('partials/header') -%>
 
 <main class="form-loggings w-100 m-auto text-center position-absolute top-50 start-50 translate-middle">
@@ -9,13 +10,14 @@
         if (locals.messages.errors) { 
           messages.errors.forEach( el => { 
       %>
+      <%# each alert %>
       <div class="alert alert-danger"><%= el.msg %></div>
       <%
           })
-        } 
+        }
       %>
 
-      <%# login form %>
+      <%# signup form %>
       <form action="/auth/signup" method="POST">
         <a href="/"><img class="mb-4" src="/imgs/logoIcon.png" alt="logoIcon" width="72" height="57"></a>
         <h1 class="h3 mb-3 fw-normal">Meals on Demand</h1>
@@ -28,9 +30,8 @@
 
         <%# email input %>
         <div class="form-floating mt-3 mb-3">
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="name@example.com" name="email">
-          <label for="exampleInputEmail1">Email address</label>
-          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          <input type="email" class="form-control" id="inputEmail" aria-label="email input" placeholder="name@example.com" name="email">
+          <label for="inputEmail">Email address</label>
         </div>
 
         <%# password input %>
@@ -55,4 +56,5 @@
   </div>
 </main>
 
+<%# load footer partial %>
 <%- include('partials/footer') -%>

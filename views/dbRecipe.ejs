@@ -1,0 +1,204 @@
+<%# load header partial %>
+<%- include('partials/header') -%>
+<%# load nav partial %>
+<%- include('partials/nav') -%>
+
+<main class="w-100 m-auto text-center ">
+
+  <%
+    //error alerts 
+    if (locals.messages.errors) { 
+      messages.errors.forEach( el=> { 
+  %>
+  <%# each alert %>
+  <div class="alert alert-danger"><%=el.msg%></div>
+  <%
+      });
+    };
+  
+    //information alerts 
+    if (locals.messages.info) { 
+      messages.info.forEach( el=> { 
+  %>
+  <%# each alert %>
+  <div class="alert alert-info"><%= el.msg %></div>
+  <%
+      });
+    };
+  %>
+
+  <%# page image %>
+  <img class="mb-2 mt-2" src="/imgs/pageImage.png" alt="bookImage" width="100">
+
+  <%# recipe name %>
+  <h1 class="display-5 fw-bold lh-1 mb-3 text-center" id="editRecipeName"><%=dbRecipe['name']%>
+    <%# edit recipe name modal trigger %>  
+    <button class="btn fas fa-edit editNamRef name"></button>
+  </h1>
+
+  <section class="row justify-content-center mt-3 px-5">
+    <%# container recipe %>
+    <div class="card shadow-sm col-6 ">
+
+      <%# recipe image %>
+      <div>
+        <img src="<%=dbRecipe['image']%>" class="mt-3" width="50%" height="300"></img>
+        <%# edit recipe name modal trigger %>
+        <button class="btn fa fa-upload"></button>
+      </div>
+
+      <%# recipe types %>
+      <div class="d-flex justify-content-center mt-3">
+
+        <%
+          //loop through each type
+          dbRecipe['type'].forEach(mtype => {
+        %>
+
+        <%# each type %>
+        <h6 class="btn-primary btn-lg px-4 me-md-2 types"><%=mtype%></h6>
+
+        <%
+          });
+        %>
+
+      </div>
+
+      <%# recipe ingredients %>
+      <div class="card-body">
+        <h4>Ingredients</h4>
+        <ul class="px-0">
+
+          <%
+            //loop through ingredients 
+            dbRecipe['ingredients'].forEach(ingredient => {
+          %>
+
+          <li class="border-bottom row">
+            <%# edit ingredient modal trigger %>
+            <div class="col-sm">
+              <button type="button" class="btn fas fa-edit editIngrInst ingredients <%=ingredient%>"></button>
+            </div>
+
+            <%# each ingredient %>
+            <div class="col-sm">
+              <%=ingredient%>
+            </div>
+
+            <%# delete ingredient form/button %>
+            <div class="col-sm">
+              <form action="/dbRecipes/deleteIngrInst/<%= dbRecipe['_id'] %>?_method=DELETE" method="POST">
+
+                <%# delete item %>
+                <input type="hidden" class="form-control" name="deleteIngredient" value="<%=ingredient%>">
+
+                <%# submit deletion %>
+                <button class="btn fa fa-trash"></button>
+
+              </form>
+            </div>
+          </li>
+
+          <%
+            });           
+          %>
+
+          <div>
+            <%# add ingredient modal trigger %>
+            <button type="button" class="btn btn-primary mt-2 addIngrInst">
+              +Add ingredient
+            </button>
+          </div>
+
+        </ul>
+      </div>
+
+      <%# recipe instructions %>
+      <div class="card-body">
+        <h4>Instructions</h4>
+        <ul class="px-0">
+
+          <%
+            //loop through instructions
+            dbRecipe['instructions'].forEach(instruction => {
+          %>
+
+          <li class="border-bottom row">
+
+            <%# add item button %>
+            <div class="col-sm">
+              <button type="button" class="btn fas fa-edit editIngrInst instructions <%=instruction%>"></button>
+            </div>
+
+            <%# each instruction %>
+            <div class="col-sm">
+              <%=instruction%>
+            </div>
+
+            <%# delete instruction form/button %>
+            <div class="col-sm">
+              <form action="/dbRecipes/deleteIngrInst/<%=dbRecipe['_id'] %>?_method=DELETE" method="POST">
+
+                <%# deleted item %>
+                <input type="hidden" class="form-control" name="deleteInstruction" value="<%=instruction%>">
+
+                <%# submit deletion %>
+                <button class="btn fa fa-trash"></button>
+
+              </form>
+            </div>
+
+          </li>
+
+          <%
+            })
+          %>
+
+          <div>
+            <%# add instruction modal trigger %>
+            <button type="button" class="btn btn-primary mt-2 addIngrInst">
+              +Add instruction
+            </button>
+          </div>
+
+        </ul>
+      </div>
+
+      <%# recipe reference %>
+      <div class="card-body">
+        <h4>Recipe Reference</h4>
+        <%# link to original recipe %>
+        <h6>
+          <a href="<%=dbRecipe['reference']%>" target="_blank" id="editReference">Reference Site/Video</a>
+          <%# edit reference modal trigger %>
+          <button class="btn fas fa-edit editNamRef reference"></button>
+        </h6>
+      </div>
+
+
+      <div class="d-flex justify-content-around align-items-center px-4 mb-3 mt-5">
+        <%# back button %>
+        <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">Back</button>
+
+        <%# delete recipe form/button %>
+        <form action="/dbRecipes/delete/<%=dbRecipe['_id']%>?_method=DELETE" method="POST">
+          <button class="btn btn-primary btn-lg fa fa-trash"></button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<%# load modal partials related to modifying recipe(s) %>
+<%- include('partials/modals/editNamRef') -%>
+<%- include('partials/modals/changeImage') -%>
+<%- include('partials/modals/editType') -%>
+<%- include('partials/modals/editIngrInst') -%>
+<%- include('partials/modals/addIngrInst') -%>
+
+<%# load scripts related to modifying recipe(s) %>
+<script src="/js/dbRecipes.js"></script>
+
+<%# load footer partial %>
+<%- include('partials/footer') -%>

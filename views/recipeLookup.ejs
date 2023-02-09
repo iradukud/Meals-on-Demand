@@ -1,5 +1,8 @@
+<%# load header partial %>
 <%- include('partials/header') -%>
+<%# load nav partial %>
 <%- include('partials/nav') -%>
+
 
 <main class="w-100 m-auto text-center">
   <%# heading & image %>
@@ -9,6 +12,7 @@
   <% 
     //error alerts
     if (locals.messages.errors) { 
+      //each alert
       messages.errors.forEach( el=> { 
   %>
   <div class="alert alert-danger"><%= el.msg %></div>
@@ -89,7 +93,7 @@
 
         <%# recipe name %>
         <div class="card-body">
-          <a href="<%= link %>">
+          <a href="<%= link %>" class="linkText">
             <p class="card-text "><%= name %></p>
           </a>
         </div>
@@ -104,6 +108,7 @@
   <% 
     if (typeof apiRecipes!='undefined') { 
   %>
+
   <div class="d-flex justify-content-around align-items-center px-4 mt-3 mb-5">
     <%# back button %>
     <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">Back</button>
@@ -115,65 +120,79 @@
       <button class="btn btn-primary btn-lg" type="submit">Next page</button>
     </form>
   </div>
+  
   <%
     };
-  %>
-
-  <%# page navigation controls for DB results %>
-  <% 
+ 
+    //page navigation controls for DB results  
     if (typeof dbRecipes!='undefined') { 
   %>
+
   <div class="d-flex justify-content-center mt-5">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
-        <%# previous page %>
         <% 
           if(page!=0){
         %>
+
+        <%# previous page %>
         <li class="page-item">
-          <a class="page-link" href="/dbRecipes/pageLook/<%=page%>_<%=filter%>" aria-label="Previous">
+          <a class="page-link linkText" href="/dbRecipes/pageLook/<%=page%>_<%=filter%>" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
           </a>
         </li>
 
         <%# first page %>
-        <li class="page-item <%= page==0? "active" : "" %>"><a class="page-link" href="/dbRecipes/pageLook/1_<%=filter%>">1</a></li>
+        <li class="page-item <%= page==0? "active" : "" %>">
+          <a class="page-link linkText" href="/dbRecipes/pageLook/1_<%=filter%>">
+            1
+          </a>
+        </li>
+        
         <%
           };
-        %>
-
-        <%# next 3 pages, if they exist %>
-        <% 
+        
+          //next 3 pages, if they exist 
           for(navPage=page;navPage<Math.ceil(recipes.length/20);navPage++){
             if(navPage==page+4){
               break;
             };
         %>
-        <li class="page-item <%= page==navPage? "active" : "" %>"><a class="page-link" href="/dbRecipes/pageLook/<%=navPage+1%>_<%=filter%>"><%=navPage+1%></a></li>
+
+        <li class="page-item <%= page==navPage? "active" : "" %>">
+          <a class="page-link linkText" href="/dbRecipes/pageLook/<%=navPage+1%>_<%=filter%>">
+            <%=navPage+1%>
+          </a>
+        </li>
+        
         <%
           };
+        
+          if(itemEnd<recipes.length){ 
         %>
 
         <%# next page %>
-        <% 
-          if(itemEnd<recipes.length){ 
-        %>
         <li class="page-item">
-          <a class="page-link" href="/dbRecipes/pageLook/<%=page+2%>_<%=filter%>" aria-label="Next">
+          <a class="page-link class linkText" href="/dbRecipes/pageLook/<%=page+2%>_<%=filter%>" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
           </a>
         </li>
+        
         <%
-          }
+          };
         %>
+
       </ul>
     </nav>
   </div>
+
   <%
     };
   %>
-</main>
 
+  </main>
+
+<%# load footer partial %>
 <%- include('partials/footer') -%>

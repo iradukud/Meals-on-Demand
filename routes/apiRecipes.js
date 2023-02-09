@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const apiRecipeController = require("../controllers/apiRecipes");
-const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
-/* Recipe Routes */
+//api recipe Routes
+//creation routes
 router.post("/lookup", apiRecipeController.getRecipes);
-router.get("/:id", apiRecipeController.getRecipe);
 router.post("/save", apiRecipeController.saveRecipe);
 
-
+//retrieval routes
+router.get("/:id", apiRecipeController.getRecipe);
 
 module.exports = router;
