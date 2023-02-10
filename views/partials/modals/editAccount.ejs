@@ -1,47 +1,46 @@
-  <%# edit account modal %>
-  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalTitle" aria-hidden="true">
-    <div class="modal-dialog " role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <%# close title %>
-          <h5 class="modal-title" id="accountModalTitle"></h5>
-          <%# close modal %>
-          <button type="button" class="close" data-dismiss="modal" aria-label="close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<%# edit account modal %>
+<div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalTitle" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# close title %>
+        <h5 class="modal-title" id="accountModalTitle"></h5>
+        <%# close modal %>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <%# form that takes edited inputs %>
+      <form id="accountForm" method="POST">
+        <div class="modal-body">
+
+          <%# old password input%>
+          <div class="mb-3 form-floating">
+            <input type="hidden" class="form-control" id="oldPassword" name="oldPassword">
+            <label id="oldPasswordLabel" for="oldPassword"></label>
+          </div>
+
+          <%# main input used to make change %>
+          <div class="mb-3 form-floating">
+            <input class="form-control" id="editItem">
+            <label id="editItemLabel"></label>
+          </div>
+
+          <%# confirm password input %>
+          <div class="mb-3 form-floating">
+            <input type="hidden" class="form-control" id="confirmPassword" name="confirmPassword">
+            <label id="confirmPasswordLabel" for="confirmPassword"></label>
+          </div>
+
+        </div>
+        <%# submission button %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
+          <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
         </div>
 
-        <%# form that takes edited inputs %>
-        <form id="accountForm" method="POST">
-          <div class="modal-body">
-
-            <%# old password input%>
-            <div class="mb-3 form-floating">
-              <input type="hidden" class="form-control" id="oldPassword" name="oldPassword">
-              <label id="oldPasswordLabel" for="oldPassword"></label>
-            </div>
-
-            <%# main input used to make change %>
-            <div class="mb-3 form-floating">
-              <input class="form-control" id="editItem">
-              <label id="editItemLabel"></label>
-            </div>
-
-            <%# confirm password input %>
-            <div class="mb-3 form-floating">
-              <input type="hidden" class="form-control" id="confirmPassword" name="confirmPassword">
-              <label id="confirmPasswordLabel" for="confirmPassword"></label>
-            </div>
-          
-          </div>
-          <%# submission button %>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary close fa fa-window-close" data-dismiss="modal"></button>
-            <button type="submit" class="btn btn-primary fas fa-chevron-circle-right"></button>
-          </div>
-
-        </form>
-
-      </div>
+      </form>
     </div>
   </div>
+</div>
