@@ -7,8 +7,8 @@
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "MIT",
+  "author": "David Iradukunda <iradukuda10@gmail.com> (https://daviradprofile.netlify.app)",
+  "license": "(MIT OR Apache-2.0)", 
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.25.1",
@@ -27,5 +27,8 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "validator": "^13.6.0"
+  },
+  "engines": {
+    "node": ">=18 <18.13.0"
   }
 }
