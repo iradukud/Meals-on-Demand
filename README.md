@@ -76,14 +76,14 @@
 <p align="center">
 1. clone repo<br>
 2. run `npm install`<br>
-3. update DATABASE_URL in config/database
+3. configure enviroment variables
 </p>
 
 <!-- backend usage -->
-# <h1 align="center">Installation</h1>
+# <h1 align="center">Usage</h1>
 <p align="center">
 1. run `node server.js`<br>
-2. navigate to `localhost:"assigned port number"`
+2. access site on assigned port number (localhost:"assigned port number")
 </p>
 
 <!-- other projects -->
