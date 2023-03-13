@@ -97,11 +97,13 @@
       <!-- first column -->
       <td width="33.3%">
         <!-- name w/repo link -->
-        <a target="_blank" href=""></a>
+        <p align="center">
+          <a target="_blank" href="https://github.com/iradukud/iradukud/blob/main/assests/imgs/ht_demo.gif">HotTakes</a>
+        </p>
         <br>
         <!-- demo w/repo link -->
         <a target="_blank" href="">
-            <img src="" width="100%"  alt="">
+            <img src="https://github.com/iradukud/iradukud/blob/main/assests/imgs/ht_demo.gif" width="100%"  alt="HotTakes demo video">
         </a>
       </td>
       <!-- second column -->
