@@ -98,11 +98,11 @@
       <td width="33.3%">
         <!-- name w/repo link -->
         <p align="center">
-          <a target="_blank" href="https://github.com/iradukud/Meals-on-Demand">HotTakes</a>
+          <a target="_blank" href="https://github.com/iradukud/Hot-Takes">HotTakes</a>
         </p>
         <br>
         <!-- demo w/repo link -->
-        <a target="_blank" href="https://github.com/iradukud/Meals-on-Demand">
+        <a target="_blank" href="https://github.com/iradukud/Hot-Takes">
             <img src="https://github.com/iradukud/iradukud/blob/main/assests/imgs/ht_demo.gif" width="100%"  alt="HotTakes demo video">
         </a>
       </td>
