@@ -109,7 +109,9 @@
       <!-- second column -->
       <td width="33.3%">
         <!-- name w/repo link -->
-        <a target="_blank" href="https://github.com/iradukud/hitlist">Hitlist</a>
+        <p align="center">
+          <a target="_blank" href="https://github.com/iradukud/hitlist">Hitlist</a>
+        </p>
         <br>
         <!-- demo w/repo link -->
         <a target="_blank" href="https://github.com/iradukud/hitlist">
@@ -119,7 +121,9 @@
       <!-- third column -->
       <td width="33.3%">
         <!-- name w/repo link -->
-        <a target="_blank" href="https://github.com/iradukud/Shuffle-Puzzle">M.City - Shuffle puzzle</a>
+        <p align="center">
+          <a target="_blank" href="https://github.com/iradukud/Shuffle-Puzzle">M.City - Shuffle puzzle</a>
+        </p>
         <br>
         <!-- demo w/repo link -->
         <a target="_blank" href="https://github.com/iradukud/Shuffle-Puzzle">
