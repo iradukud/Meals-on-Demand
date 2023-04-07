@@ -98,7 +98,7 @@
       <td width="33.3%">
         <!-- name w/repo link -->
         <p align="center">
-          <a target="_blank" href="https://github.com/iradukud/iradukud/blob/main/assests/imgs/ht_demo.gif">HotTakes</a>
+          <a target="_blank" href="https://github.com/iradukud/Meals-on-Demand">HotTakes</a>
         </p>
         <br>
         <!-- demo w/repo link -->
